@@ -63,12 +63,54 @@ controls.maxPolarAngle = 1.53;
 
 const material = (color, roughness = .75, metalness = 0) =>
   new T.MeshStandardMaterial({ color, roughness, metalness });
-const oak = material(0x503022);
-const walnut = material(0x2b1c18);
-const stone = material(0x625249, .38);
+function seededRandom(seed) {
+  return () => {
+    seed = (Math.imul(seed, 1664525) + 1013904223) >>> 0;
+    return seed / 4294967296;
+  };
+}
+
+function surfaceTexture(kind) {
+  const textureCanvas = document.createElement('canvas');
+  textureCanvas.width = textureCanvas.height = 256;
+  const context = textureCanvas.getContext('2d');
+  const pixels = context.createImageData(256,256);
+  const random = seededRandom(kind === 'wood' ? 202 : 310);
+  for (let y=0;y<256;y++) {
+    for (let x=0;x<256;x++) {
+      const grain = kind === 'wood'
+        ? Math.sin(x*.62+Math.sin(y*.035)*1.9+Math.sin(x*.055)*3)*12
+          + Math.sin(x*.21+Math.sin(y*.018)*2)*19
+        : Math.sin(x*.067+y*.076+Math.sin(y*.023)*2)*10
+          + Math.sin(x*.18-y*.09)*6;
+      const shade = Math.round(198 + grain + (random()-.5)*25);
+      const i = (y*256+x)*4;
+      pixels.data.set([shade,shade,shade,255],i);
+    }
+  }
+  context.putImageData(pixels,0,0);
+  const texture = new T.CanvasTexture(textureCanvas);
+  texture.colorSpace = T.SRGBColorSpace;
+  texture.wrapS = texture.wrapT = T.RepeatWrapping;
+  texture.anisotropy = Math.min(8,renderer.capabilities.getMaxAnisotropy());
+  return texture;
+}
+const woodGrain = surfaceTexture('wood');
+const stoneGrain = surfaceTexture('stone');
+const oak = material(0x77513b);
+oak.map = woodGrain;
+const walnut = material(0x4f362a);
+walnut.map = woodGrain;
+const stone = material(0x817269, .34);
+stone.map = stoneGrain;
+const floorStone = stone.clone();
+floorStone.map = stoneGrain.clone();
+floorStone.map.repeat.set(12,9);
 const bronze = material(0xb58953, .27, .72);
 const china = material(0xf4e5cd, .35);
-const fabric = material(0x55463a);
+const fabric = material(0x8a6c57, .96);
+const upholstery = new T.SphereGeometry(1,18,12);
+const linen = material(0xd9c5a9, .86);
 const foliage = [material(0x354f36), material(0x536541), material(0x223f2e)];
 const glow = new T.MeshBasicMaterial({ color: 0xffd3a0 });
 const glass = new T.MeshPhysicalMaterial({
@@ -90,7 +132,13 @@ function mesh(geometry, surface, position, scale, parent = scene) {
 const box = (m, x,y,z, a,b,c, p) => mesh(boxGeo,m,[x,y,z],[a,b,c],p);
 const disc = (m, x,y,z, r,h, p) => mesh(cylinderGeo,m,[x,y,z],[r,h,r],p);
 
-box(stone,0,-.15,0,22,.3,16);
+box(floorStone,0,-.15,0,22,.3,16);
+for (let x=-10;x<11;x+=2) box(walnut,x,.002,0,.008,.003,16);
+for (let z=-7;z<8;z+=2) box(walnut,0,.002,z,22,.003,.008);
+for (const x of [-10.65,3.9,10.65]) box(glow,x,.012,0,.024,.012,15.4);
+const ceilingSlats = new T.Group();
+scene.add(ceilingSlats);
+for (let x=-10.7;x<11;x+=.24) box(oak,x,4.49,-.55,.105,.085,14.75,ceilingSlats);
 box(oak,0,-.14,11.4,22,.28,6.8);
 const roof = box(walnut,0,4.67,-.5,22,.23,15);
 box(walnut,0,2.25,-8,22,4.55,.24);
@@ -158,16 +206,33 @@ for (const [i,[x,z]] of layout.entries()) {
     chair.position.set(Math.sin(angle)*(radius+.34),0,Math.cos(angle)*(radius+.34));
     chair.rotation.y = angle;
     group.add(chair);
-    box(fabric,0,.45,0,.43,.12,.42,chair);
-    box(fabric,0,.67,.185,.435,.4,.08,chair);
+    mesh(upholstery,fabric,[0,.446,0],[.24,.092,.225],chair);
+    const back = mesh(upholstery,fabric,[0,.68,.173],[.24,.233,.069],chair);
+    back.rotation.x = -.11;
+    for (const side of [-.203,.203]) {
+      const arm = mesh(upholstery,fabric,[side,.58,.055],[.045,.105,.163],chair);
+      arm.rotation.x = -.08;
+    }
     for (const a of [-.16,.16]) for (const b of [-.15,.15])
       box(walnut,a,.21,b,.044,.42,.044,chair);
     const px = Math.sin(angle)*(radius-.18), pz = Math.cos(angle)*(radius-.18);
     disc(china,px,.81,pz,.125,.025,group);
+    const napkin = box(linen,px,.828,pz,.104,.018,.057,group);
+    napkin.rotation.y = angle;
+    const offsetX = Math.cos(angle)*.157, offsetZ = -Math.sin(angle)*.157;
+    const cutlery = box(bronze,px+offsetX,.81,pz+offsetZ,.015,.012,.17,group);
+    cutlery.rotation.y = angle;
     disc(glass,px*.73,.875,pz*.73,.031,.11,group);
   }
   disc(bronze,0,.85,0,.046,.095,group);
   disc(glow,0,.91,0,.016,.025,group);
+  if (i%3===0) {
+    disc(bronze,.18,.866,0,.049,.124,group);
+    for(let flower=0;flower<6;flower++) {
+      const a=flower*2.4;
+      mesh(ballGeo,linen,[.18+Math.sin(a)*.07,.98+(flower%3)*.032,Math.cos(a)*.07],[.049,.035,.045],group);
+    }
+  }
 }
 for (const [x,z] of [[-7,-2],[-2,-2],[-7,3],[-2,3],[7,-3],[7,3]]) {
   disc(bronze,x,4.18,z,.018,.8);
@@ -180,7 +245,41 @@ for (const [x,z] of [[-7,-2],[-2,-2],[-7,3],[-2,3],[7,-3],[7,3]]) {
   scene.add(light);
 }
 
-box(material(0x314343,.36),0,-.53,19,150,.23,100);
+const lake = material(0x263a4a,.29,.42);
+lake.map = stoneGrain.clone();
+lake.map.repeat.set(9,3);
+box(lake,0,-.62,63,160,.15,96);
+box(material(0x343930),0,-.49,2,65,.18,31);
+const skyline = new T.Group();
+scene.add(skyline);
+const ridge = material(0x293342);
+for (let i=0;i<18;i++) {
+  const radius = 7 + (i%4)*2;
+  mesh(ballGeo,ridge,[-69+i*8.4,-1.7,95+(i%3)*4],[radius,3.6+(i%5)*1.4,7],skyline);
+}
+const shoreRandom = seededRandom(38);
+for(let i=0;i<38;i++) {
+  const x = (shoreRandom()-.5)*98;
+  const z = 55 + shoreRandom()*16;
+  mesh(ballGeo,glow,[x,.11+shoreRandom()*.2,z],[.04,.034,.04],skyline);
+}
+const skyUniforms = {
+  top: { value:new T.Color() }, horizon:{value:new T.Color()},
+  west:{value:new T.Color()}
+};
+const sky = new T.Mesh(new T.SphereGeometry(150,24,16),new T.ShaderMaterial({
+  uniforms: skyUniforms, side:T.BackSide, depthWrite:false,
+  vertexShader:`varying vec3 world; void main(){world=position;gl_Position=projectionMatrix*modelViewMatrix*vec4(position,1.0);}`,
+  fragmentShader:`uniform vec3 top,horizon,west; varying vec3 world;
+    void main(){vec3 n=normalize(world);
+      float high=pow(clamp(n.y*2.1,0.0,1.0),0.55);
+      float amber=pow(max(dot(n,normalize(vec3(-0.45,0.0,1.0))),0.0),8.0)*(1.0-high);
+      gl_FragColor=vec4(mix(mix(horizon,top,high),west,amber*0.72),1.0);
+      #include <colorspace_fragment>
+    }`
+}));
+sky.renderOrder = -10;
+scene.add(sky);
 for(let i=0;i<37;i++) {
   const x = -33 + i*2.4, z = 25 + (i%5)*2.7;
   mesh(ballGeo,foliage[i%3],[x,1.2,z],[1.4,1.8+(i%5)*.55,1.7]);
@@ -197,12 +296,12 @@ scene.add(sun);
 
 const views = {
   overview: [[17,13,25],[0,.5,3]],
-  hall: [[2,2.8,6],[-3,1.4,-3]],
+  hall: [[1.55,2.05,5.25],[-4.45,1.75,-3.3]],
   terrace: [[9,3.7,13],[-2,1.3,8.8]],
   vip: [[9.8,2.65,5.65],[7.3,1.25,-2]]
 };
-camera.position.set(...views.overview[0]);
-controls.target.set(...views.overview[1]);
+camera.position.set(...views.hall[0]);
+controls.target.set(...views.hall[1]);
 let transition;
 function go(position,target) {
   transition = {
@@ -221,8 +320,10 @@ document.querySelector('#seat-view').addEventListener('click',()=>{
 });
 const lightToggle = document.querySelector('#sunlight');
 function lightMode(day) {
-  scene.background = new T.Color(day?0xaebcca:0x66526a);
-  scene.fog = new T.FogExp2(scene.background,.013);
+  skyUniforms.top.value.set(day?0x72a4d7:0x172a48);
+  skyUniforms.horizon.value.set(day?0xaebfcd:0x4b617d);
+  skyUniforms.west.value.set(day?0xffedc8:0xba785b);
+  scene.fog = new T.FogExp2(day?0xaebfcd:0x455267,.009);
   sun.intensity = day?3.05:1.05;
   ambient.intensity = day?2.1:1.35;
   lightToggle.setAttribute('aria-pressed',String(day));
@@ -262,7 +363,7 @@ renderer.setAnimationLoop(()=>{
     if (time===1) transition = null;
   }
   highlights.forEach((mesh,index)=>{ mesh.visible = tables[index].id===selected; });
-  roof.visible = camera.position.y < 4.5;
+  roof.visible = ceilingSlats.visible = camera.position.y < 4.5;
   controls.update();
   renderer.render(scene,camera);
 });
