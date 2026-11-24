@@ -68,6 +68,7 @@ import { OrbitControls } from 'https://cdn.jsdelivr.net/npm/three@0.170.0/exampl
 const compact = matchMedia('(max-width: 720px), (pointer: coarse)').matches;
 const stage = document.querySelector('#restaurant-stage');
 const scene = new T.Scene();
+scene.scale.x = -1;
 const camera = new T.PerspectiveCamera(43, 1, .12, 180);
 const renderer = new T.WebGLRenderer({ antialias: true });
 renderer.setPixelRatio(Math.min(compact ? 1.25 : 1.65, devicePixelRatio));
@@ -266,7 +267,7 @@ function indoorTree(x,z) {
   const fork = new T.Vector3(x+.09,2.19,z-.1);
   branch(origin,fork,.147);
   const leafGeometry = new T.PlaneGeometry(.088,.157);
-  const leafMat = new T.MeshStandardMaterial({color:0xd3ddaa,side:T.DoubleSide,roughness:.58,alphaTest:.35});
+  const leafMat = new T.MeshStandardMaterial({color:0x859974,side:T.DoubleSide,roughness:.58,alphaTest:.35});
   const mask=document.createElement('canvas');
   mask.width=32;
   mask.height=48;
@@ -306,7 +307,7 @@ function indoorTree(x,z) {
   leaves.receiveShadow=true;
   leaves.castShadow=!compact;
   scene.add(leaves);
-  const uplight=new T.PointLight(0xffc481,31,4.6,2);
+  const uplight=new T.PointLight(0xffc481,12,4.6,2);
   uplight.position.set(x-.31,.78,z+.25);
   scene.add(uplight);
 }
@@ -468,21 +469,22 @@ sun.shadow.mapSize.set(1024,1024);
 sun.shadow.normalBias = .035;
 scene.add(sun);
 
+const mirror = ([x,y,z]) => [-x,y,z];
 const views = {
   overview: [[17,13,25],[0,.5,3]],
-  hall: [[-7.48,1.58,-4.64],[-2.75,1.72,6.85]],
+  hall: [[-8.2,1.54,-4.8],[-2.75,1.58,6.85]],
   terrace: [[9,3.7,13],[-2,1.3,8.8]],
   vip: [[9.8,2.65,5.65],[7.3,1.25,-2]]
 };
-camera.fov = compact ? 57 : 62;
+camera.fov = compact ? 58 : 56;
 camera.updateProjectionMatrix();
-camera.position.set(...views.hall[0]);
-controls.target.set(...views.hall[1]);
+camera.position.set(...mirror(views.hall[0]));
+controls.target.set(...mirror(views.hall[1]));
 let transition;
 function go(position,target) {
   transition = {
     start: performance.now(), position: camera.position.clone(), target: controls.target.clone(),
-    endPosition: new T.Vector3(...position), endTarget: new T.Vector3(...target)
+    endPosition: new T.Vector3(...mirror(position)), endTarget: new T.Vector3(...mirror(target))
   };
 }
 controls.addEventListener('start',()=>{ transition = null; });
@@ -506,8 +508,8 @@ function lightMode(day) {
   skyUniforms.horizon.value.set(day?0xaebfcd:0x4b617d);
   skyUniforms.west.value.set(day?0xffedc8:0xba785b);
   scene.fog = new T.FogExp2(day?0xaebfcd:0x455267,.009);
-  sun.intensity = day?3.05:1.05;
-  ambient.intensity = day?2.1:1.35;
+  sun.intensity = day?3.05:.62;
+  ambient.intensity = day?2.1:1.07;
   lightToggle.setAttribute('aria-pressed',String(day));
   lightToggle.textContent = day?'Вечер':'День';
 }
