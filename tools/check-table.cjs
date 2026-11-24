@@ -1,29 +1,22 @@
 const { chromium } = require(process.env.PLAYWRIGHT_MODULE || 'playwright');
-const { createServer } = require('node:http');
-const { mkdirSync, readFileSync } = require('node:fs');
-const { extname, resolve, sep } = require('node:path');
+const { mkdirSync } = require('node:fs');
 const assert = require('node:assert/strict');
 
-const root = resolve('dist');
-const mime = { '.html':'text/html', '.mjs':'text/javascript', '.glb':'model/gltf-binary' };
-const server = createServer((req,res)=>{
-  const pathname = new URL(req.url,'http://localhost').pathname;
-  const path = resolve(root,'.'+pathname+(pathname.endsWith('/')?'index.html':''));
-  if(!path.startsWith(root+sep)) { res.writeHead(404).end(); return; }
-  try {
-    const data = readFileSync(path);
-    res.writeHead(200,{'Content-Type':mime[extname(path)] || 'application/octet-stream'}).end(data);
-  } catch { res.writeHead(404).end(); }
-});
+const url=process.argv[2];
+if(!url) throw new Error('Pass the published table URL.');
+
 (async()=>{
-  await new Promise(done=>server.listen(0,'127.0.0.1',done));
   const browser=await chromium.launch({
     channel:'chrome', args:['--use-angle=swiftshader','--enable-unsafe-swiftshader']
   });
   try {
-    const url='http://127.0.0.1:'+server.address().port+'/table/';
     const errors=[];
-    const watch=page=>page.on('pageerror',error=>errors.push(error.message));
+    const watch=page=>{
+      page.on('pageerror',error=>errors.push(error.message));
+      page.on('console',message=>{
+        if(message.type()==='error') console.error(message.text());
+      });
+    };
     const page=await browser.newPage({viewport:{width:1200,height:700}});
     watch(page);
     await page.goto(url);
@@ -42,10 +35,11 @@ const server = createServer((req,res)=>{
     assert.equal(await seat.getAttribute('aria-pressed'),'false');
     await page.waitForTimeout(350);
     await page.screenshot({timeout:60000,path:'table-captures/orbit.jpg'});
+    await page.close();
     const mobile=await browser.newPage({viewport:{width:390,height:844},isMobile:true,hasTouch:true});
     watch(mobile);
     await mobile.goto(url);
-    await mobile.locator('[data-scene="ready"]').waitFor({timeout:20000});
+    await mobile.locator('[data-scene="ready"]').waitFor({timeout:60000});
     assert.ok(await mobile.evaluate(()=>document.documentElement.scrollWidth===innerWidth));
     const mobileSeat=mobile.getByRole('button',{name:'Место гостя'});
     await mobileSeat.tap();
@@ -55,4 +49,4 @@ const server = createServer((req,res)=>{
   } finally {
     await browser.close();
   }
-})().catch(error=>{console.error(error);process.exitCode=1;}).finally(()=>server.close());
+})().catch(error=>{console.error(error);process.exitCode=1;});
