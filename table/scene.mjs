@@ -107,6 +107,13 @@ linen.bumpMap=weave;
 linen.bumpScale=.0018;
 textile.roughnessMap=weave;
 textile.roughness=.98;
+textile.map=texture(128,(u,v,x,y)=>{
+  const warp=Math.sin(u*Math.PI*64),weft=Math.sin(v*Math.PI*64);
+  const thread=((x>>2)+(y>>2))&1 ? warp : weft;
+  const shade=214+thread*9+hash(x,y)*15;
+  return [shade,shade,shade];
+},true);
+textile.map.repeat.copy(weave.repeat);
 
 function mesh(geometry,material,x=0,y=0,z=0,parent=scene) {
   const item=new T.Mesh(geometry,material);
@@ -252,7 +259,7 @@ function placeSettings(goblet) {
   }
 }
 
-const {scene:assets}=await new GLTFLoader().loadAsync('../assets/table-furniture.glb');
+const {scene:assets}=await new GLTFLoader().loadAsync('../assets/table-furniture.glb?v=2');
 const chair=assets.getObjectByName('DiningChair');
 const goblet=assets.getObjectByName('WineGlass');
 if(!chair || !goblet) throw new Error('Dining asset nodes are missing.');

@@ -34,7 +34,7 @@
     </footer>
   </main>
   <script type="module">
-    import('./scene.mjs').catch(error => {
+    import('./scene.mjs?v=2').catch(error => {
       document.querySelector('#status').textContent = 'Не удалось загрузить 3D-сцену.';
       console.error(error);
     });

@@ -45,6 +45,10 @@ def loft(name, rings, mat, parent, closed=False):
         for col in range(width if closed else width-1):
             following = (col+1)%width
             faces.append((row*width+col,row*width+following,(row+1)*width+following,(row+1)*width+col))
+    if name == 'Wraparound upholstery':
+        edge = range(len(rings)-1)
+        faces.append(tuple(row*width for row in reversed(edge)))
+        faces.append(tuple(row*width+width-1 for row in edge))
     obj = mesh(name,[pt for ring in rings for pt in ring],faces,mat,parent)
     uv = obj.data.uv_layers.new(name='Fabric UV')
     for polygon in obj.data.polygons:
@@ -96,8 +100,8 @@ tube('Cushion seam',rings[3],.0022,seam,chair,True)
 for x in [-1,1]:
     for y in [-1,1]:
         start=Vector((x*.206,y*.207,.005))
-        end=Vector((x*.159,y*.161,.443))
-        bpy.ops.mesh.primitive_cone_add(vertices=10,radius1=.013,radius2=.022,depth=(end-start).length,location=(start+end)/2)
+        end=Vector((x*.159,y*.161,.423))
+        bpy.ops.mesh.primitive_cone_add(vertices=10,radius1=.013,radius2=.018,depth=(end-start).length,location=(start+end)/2)
         obj=bpy.context.object
         obj.rotation_euler=(end-start).to_track_quat('Z','Y').to_euler()
         obj.parent=chair
