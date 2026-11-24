@@ -1,8 +1,26 @@
 <!doctype html><html lang="ru"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>МЕРИДИАМ · RESTAURANT EXPERIENCE</title><style>
 :root{color-scheme:dark;--bg:#0b1115;--panel:#121a20;--line:#36444b;--blue:#9accf3;--gold:#cba978;--muted:#9da9ae}*{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse at 70% 0,#1e2a32,#0b1115 70%);color:#eaf0f2;font:15px/1.5 -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}button,input,select{font:inherit}button{cursor:pointer}button:disabled{opacity:.3;cursor:not-allowed}.top{padding:24px 30px 12px;display:flex;align-items:center;justify-content:space-between;gap:10px;border-bottom:1px solid #26333b}.brand{letter-spacing:.32em;font-size:21px;color:#deecfa}.sub{font-size:10px;letter-spacing:.18em;color:var(--muted)}.eyebrow{font-size:11px;letter-spacing:.22em;color:var(--blue)}.nav{display:flex;gap:8px;flex-wrap:wrap;align-items:center}.btn{border:1px solid #3e525d;border-radius:14px;background:#1b2830;color:#edf4f6;padding:10px 14px;transition:.2s}.btn:hover,.btn.active{border-color:#8bbdde;background:#29404d}.btn.primary{background:#bda17c;color:#111922;border-color:#bda17c;font-weight:700}.main{display:grid;grid-template-columns:minmax(0,1fr) 390px;min-height:calc(100vh - 85px)}.scene{padding:30px;min-width:0}.scene h1{font-size:clamp(25px,3vw,42px);font-weight:450;letter-spacing:.04em;margin:8px 0}.lede{color:#afbdc5;max-width:620px}.map{position:relative;margin-top:24px;min-height:560px;border:1px solid #42515b;border-radius:28px;overflow:hidden;background:radial-gradient(ellipse at 62% 18%,#4a3d30 0,#2b302f 34%,#18262c 75%);box-shadow:0 25px 80px #0005}.map:before{content:'';position:absolute;inset:8%;border:1px solid #bda17c55;border-radius:120px 20px 40px 30px;pointer-events:none}.map-label{position:absolute;letter-spacing:.18em;font-size:10px;color:#c9d6ddaa}.walk{position:absolute;left:47%;top:10%;width:13%;height:76%;border-left:1px dashed #bca77d40;border-right:1px dashed #bca77d40;transform:rotate(-10deg)}.terrace{position:absolute;top:4%;left:64%;width:32%;height:50%;border:1px dashed #b9bdad69;border-radius:20px;background:#4d514638}.vip{position:absolute;bottom:5%;right:5%;width:30%;height:30%;border:1px solid #d6b78577;border-radius:28px;background:#47392950}.bar{position:absolute;left:5%;top:7%;width:26%;height:7%;border-radius:16px;background:linear-gradient(90deg,#755639,#bc8c55);box-shadow:0 0 20px #d8a9692b}.table-dot{position:absolute;transform:translate(-50%,-50%);border-radius:50%;width:42px;height:42px;background:#254f45;border:2px solid #86c4b6;color:#ecf8ef;font-weight:700;box-shadow:0 3px 22px #050b0bbb}.table-dot.booked{background:#6a3438;border-color:#dc9295}.table-dot.selected{background:#265c83;border-color:#aaddff;box-shadow:0 0 0 7px #aaddff30,0 0 30px #8fcaff77}.table-dot:hover{transform:translate(-50%,-50%) scale(1.16)}.map-footer{display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px;margin-top:14px;color:#a5b5bc;font-size:12px}.dot{display:inline-block;width:8px;height:8px;border-radius:50%;background:#86c4b6;margin-right:6px}.details{border-left:1px solid #26333b;background:linear-gradient(180deg,#172128ee,#10171ddc);padding:26px;position:relative}.details h2{font-weight:500;margin:0 0 9px;font-size:26px}.quiet{color:var(--muted)}.row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}.stack{display:grid;gap:14px}.field{display:grid;gap:5px}.field label{font-size:12px;color:#afbbc1}.field input,.field select,.search{width:100%;padding:11px 12px;border-radius:12px;color:#e9f2f7;background:#101a20;border:1px solid #47565c}.divider{height:1px;background:#3a464d;margin:17px 0}.zone-title{font-size:13px;letter-spacing:.13em;color:#d8b989}.panel-overlay{position:fixed;z-index:10;right:18px;top:100px;bottom:20px;width:min(440px,calc(100vw - 36px));background:#12191ff7;border:1px solid #62747d;border-radius:24px;box-shadow:0 30px 110px #000c;display:flex;flex-direction:column;overflow:hidden}.panel-overlay.full{left:18px;width:auto;max-width:none}.panel-head{padding:18px 20px;border-bottom:1px solid #34424c;display:flex;align-items:center;justify-content:space-between;gap:8px}.panel-body{display:grid;grid-template-columns:1fr;gap:14px;padding:18px;overflow-y:auto}.panel-overlay.full .panel-body{grid-template-columns:250px 1fr}.categories{display:flex;gap:8px;overflow-x:auto;padding-bottom:6px}.panel-overlay.full .categories{display:grid;align-content:start;overflow:visible}.cat{white-space:nowrap;text-align:left;padding:9px 12px;border:1px solid #3e4a51;background:#19252b;color:#ecf0f3;border-radius:11px}.cat.active{border-color:#d8ad71;background:#4b3829}.dishes{display:grid;gap:10px;align-content:start}.panel-overlay.full .dishes{grid-template-columns:repeat(auto-fill,minmax(260px,1fr))}.dish{border:1px solid #34444e;background:#1b262d;border-radius:15px;padding:13px;display:flex;flex-direction:column;gap:8px}.dish-title{font-size:15px;font-weight:650}.dish-sub{font-size:11px;color:#afbcc1}.dish-actions{display:flex;align-items:center;justify-content:space-between;gap:7px}.chip{padding:5px 8px;border-radius:9px;background:#28343b;color:#c4d1d6;font-size:11px}.orderbox{padding:16px 18px;border-top:1px solid #3b4950;background:#141e25}.mini{font-size:12px;color:#c7d3d9}.hide{display:none!important}.footer-note{font-size:11px;color:#9aa8ae;margin-top:9px}.screen{position:fixed;z-index:15;inset:0;background:#071015c9;backdrop-filter:blur(4px);display:flex;justify-content:center;align-items:center;padding:16px}.modal{width:min(560px,100%);max-height:90vh;overflow:auto;border:1px solid #7c7770;border-radius:24px;background:#182329;padding:24px;box-shadow:0 35px 90px #000a}.muted{color:#b4c1c9}a{color:#acd4ee}.text-sm{font-size:12px}@media(max-width:980px){.main{display:block}.details{border:0;border-top:1px solid #3a464d}.scene{padding:20px}.map{min-height:480px}.top{padding:16px}.brand{font-size:17px}.panel-overlay{top:76px}.panel-overlay.full .panel-body{display:block}.panel-overlay.full .categories{display:flex;overflow:auto;margin-bottom:15px}.panel-overlay.full .dishes{grid-template-columns:1fr}}@media(max-width:500px){.top{display:block}.nav{margin-top:12px}.map{min-height:410px}.table-dot{width:32px;height:32px;font-size:11px}.panel-overlay.full{left:6px;right:6px;top:6px;bottom:6px}.panel-overlay{right:6px;top:100px;bottom:6px;width:calc(100vw - 12px)}.map-label{font-size:8px}.scene h1{font-size:26px}}
-</style></head><body>
+</style><style>
+#restaurant-stage{position:relative;height:clamp(340px,59vh,780px);background:#1b1820;border-radius:16px;overflow:hidden;margin:16px 0 10px}
+#restaurant-stage canvas{display:block;width:100%;height:100%;touch-action:none}
+#restaurant-status{position:absolute;inset:0;display:grid;place-content:center;text-align:center;padding:24px;color:#e1d0bd}
+#restaurant-status[hidden],#restaurant-views[hidden]{display:none}
+#restaurant-views{display:flex;gap:8px;flex-wrap:wrap}
+.scene details{margin:12px 0}
+.scene summary{cursor:pointer;color:#bdd8ed;margin-bottom:12px}
+</style>
+<script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js"}}</script>
+</head><body>
 <header class="top"><div><div class="brand">МЕРИДИАМ</div><div class="sub">СТУДИЯ ИНТЕРАКТИВНЫХ РЕШЕНИЙ</div></div><nav class="nav"><button class="btn active" onclick="closeMenu()">Обзор</button><button class="btn" onclick="openMenu(false)">Меню · панель</button><button class="btn" onclick="openMenu(true)">Меню · полностью</button><button class="btn primary" onclick="document.getElementById('booking').scrollIntoView({behavior:'smooth'})">Бронь</button></nav></header>
-<main class="main"><section class="scene"><div class="eyebrow">MERIDIAM RESTAURANT · FUNCTIONAL PROTOTYPE 0.1</div><h1>Выберите место для вечера</h1><div class="lede">Интерактивная схема пространства с 20 столиками. Это функциональный прототип навигации — окончательная фотореалистичная 3D-сцена создаётся после утверждения интерьерного референса.</div><div class="map" id="floor"><div class="walk"></div><div class="terrace"></div><div class="vip"></div><div class="bar"></div><div class="map-label" style="left:7%;top:18%">ОСНОВНОЙ ЗАЛ · 12</div><div class="map-label" style="right:8%;top:7%">ТЕРРАСА · 6</div><div class="map-label" style="right:10%;bottom:6%">VIP · 2</div></div><div class="map-footer"><span><i class="dot"></i> Свободен &nbsp;&nbsp; <i class="dot" style="background:#dc9295"></i> Занят &nbsp;&nbsp; <i class="dot" style="background:#9fcfff"></i> Выбран</span><span>Условная планировка · не архитектурный чертёж</span></div></section>
+<main class="main"><section class="scene"><div class="eyebrow">MERIDIAM RESTAURANT</div><h1>Выберите место для вечера</h1><div class="lede">Выберите зону или столик в сцене. Перетаскивайте сцену, чтобы повернуть камеру, и приближайте колёсиком или жестом.</div><div id="restaurant-views" hidden>
+<button class="btn" data-restaurant-view="overview">Общий вид</button>
+<button class="btn" data-restaurant-view="hall">Основной зал · 12</button>
+<button class="btn" data-restaurant-view="terrace">Терраса · 6</button>
+<button class="btn" data-restaurant-view="vip">VIP · 2</button>
+<button class="btn" id="seat-view">Вид со столика</button>
+<button class="btn" id="sunlight" aria-pressed="false">День</button>
+</div><div id="restaurant-stage"><div id="restaurant-status">Загружается 3D-сцена. Столики доступны на плане ниже.</div></div>
+<details><summary>План и выбор столиков</summary><div class="map" id="floor"><div class="walk"></div><div class="terrace"></div><div class="vip"></div><div class="bar"></div><div class="map-label" style="left:7%;top:18%">ОСНОВНОЙ ЗАЛ · 12</div><div class="map-label" style="right:8%;top:7%">ТЕРРАСА · 6</div><div class="map-label" style="right:10%;bottom:6%">VIP · 2</div></div><div class="map-footer"><span><i class="dot"></i> Свободен &nbsp;&nbsp; <i class="dot" style="background:#dc9295"></i> Занят &nbsp;&nbsp; <i class="dot" style="background:#9fcfff"></i> Выбран</span><span>План столиков</span></div></details></section>
 <aside class="details" id="booking"><div class="eyebrow">БРОНИРОВАНИЕ</div><h2>Ваш столик</h2><div class="quiet" id="selection">Выберите свободный столик на схеме.</div><div class="divider"></div><div class="stack"><div class="field"><label>Дата</label><input id="date" type="date"></div><div class="field"><label>Время</label><select id="time"><option>18:00</option><option>18:30</option><option>19:00</option><option>19:30</option><option>20:00</option><option>20:30</option><option>21:00</option></select></div><div class="field"><label>Количество гостей</label><select id="guests"><option>1</option><option selected>2</option><option>3</option><option>4</option><option>5</option><option>6</option></select></div></div><div class="divider"></div><div class="zone-title">ПРЕДВАРИТЕЛЬНЫЙ ЗАКАЗ</div><div id="summary" class="quiet">Вы пока не выбрали блюда.</div><div class="row" style="margin-top:12px"><button class="btn" onclick="openMenu(false)">Выбрать блюда</button><button class="btn primary" onclick="book()">Продолжить бронирование</button></div><div class="footer-note">Демонстрационная модель: бронирование не направляется в реальный ресторан. Цены и блюда условные.</div></aside></main>
 <div id="menu" class="panel-overlay hide" role="dialog" aria-label="Меню ресторана"><div class="panel-head"><div><div class="eyebrow">RESTAURANT MENU</div><div style="font-size:24px">Меню</div></div><div class="row"><button class="btn" id="viewmode" onclick="switchMode()">⛶</button><button class="btn" onclick="closeMenu()">Закрыть ✕</button></div></div><div style="padding:12px 18px"><input class="search" id="search" placeholder="Поиск по блюдам" oninput="renderMenu()"><div class="row" style="margin-top:8px"><button class="btn" id="onlyFav" onclick="toggleFavFilter()">♡ Избранное</button><button class="btn" onclick="setCat('Все')">Все блюда</button></div></div><div class="panel-body"><div class="categories" id="categories"></div><div class="dishes" id="dishes"></div></div><div class="orderbox"><div id="cartline">Предзаказ пока пуст</div><div class="row" style="margin-top:8px"><button class="btn primary" onclick="closeMenu();document.getElementById('booking').scrollIntoView({behavior:'smooth'})">К бронированию →</button><button class="btn" onclick="clearCart()">Очистить</button></div><div class="footer-note">♡ Избранное сохраняется в браузере. Предзаказ — перечень блюд, без оплаты и приготовления.</div></div></div>
 <div class="screen hide" id="confirm"><div class="modal"><h2>Тестовое бронирование</h2><p id="recap" class="muted"></p><div class="stack"><div class="field"><label>Имя</label><input id="guestname" placeholder="Как к вам обращаться"></div><div class="field"><label>Телефон (демо)</label><input id="phone" type="tel" placeholder="Номер телефона"></div><div class="field"><label>Комментарий</label><input id="comment" placeholder="Пожелания к визиту"></div></div><div class="row" style="margin-top:20px"><button class="btn primary" onclick="finishBooking()">Подтвердить тестовую бронь</button><button class="btn" onclick="document.getElementById('confirm').classList.add('hide')">Отмена</button></div><div class="footer-note">Никакие контакты не передаются на сервер. Эта версия сохраняет тестовую бронь только в текущем браузере.</div></div></div>
@@ -21,4 +39,235 @@ function renderMenu(){document.getElementById('categories').innerHTML=catNames.m
 function book(){let t=tables.find(t=>t.id===selected);if(booked(t)){alert('Этот столик занят в выбранный интервал. Выберите другой.');return}if(Number(document.getElementById('guests').value)>t.capacity){alert('Вместимость выбранного столика меньше количества гостей.');return}let n=Object.values(cart).reduce((a,b)=>a+b,0);document.getElementById('recap').textContent=`Стол №${t.id} (${t.zone}), ${dateInput.value}, ${document.getElementById('time').value}; гостей: ${document.getElementById('guests').value}. Предзаказ: ${n} блюд.`;document.getElementById('confirm').classList.remove('hide')}
 function finishBooking(){let name=document.getElementById('guestname').value.trim(),phone=document.getElementById('phone').value.trim();if(!name||!phone){alert('Для тестовой брони укажите имя и телефон.');return}let b={id:selected,date:dateInput.value,time:document.getElementById('time').value,guests:Number(document.getElementById('guests').value),cart:{...cart},name,phone,comment:document.getElementById('comment').value};demoBookings.push(b);localStorage.setItem('meridiam_restaurant_bookings',JSON.stringify(demoBookings));document.getElementById('confirm').classList.add('hide');cart={};persist();renderTables();alert('Тестовая бронь сохранена только в вашем браузере. Никакого реального бронирования не произошло.')}
 dateInput.onchange=renderTables;document.getElementById('time').onchange=renderTables;renderTables();renderMenu();
-</script></body></html>
+</script><script type="module">
+import * as T from 'https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js';
+import { OrbitControls } from 'https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/controls/OrbitControls.js';
+
+const stage = document.querySelector('#restaurant-stage');
+const scene = new T.Scene();
+const camera = new T.PerspectiveCamera(43, 1, .12, 180);
+const renderer = new T.WebGLRenderer({ antialias: true });
+renderer.setPixelRatio(Math.min(1.6, devicePixelRatio));
+renderer.shadowMap.enabled = true;
+renderer.shadowMap.type = T.PCFSoftShadowMap;
+renderer.toneMapping = T.ACESFilmicToneMapping;
+renderer.toneMappingExposure = 1.28;
+renderer.domElement.setAttribute('aria-label', 'Трёхмерный зал ресторана');
+stage.append(renderer.domElement);
+const controls = new OrbitControls(camera, renderer.domElement);
+controls.enableDamping = true;
+controls.enablePan = false;
+controls.minDistance = 1.3;
+controls.maxDistance = 40;
+controls.maxPolarAngle = 1.53;
+
+const material = (color, roughness = .75, metalness = 0) =>
+  new T.MeshStandardMaterial({ color, roughness, metalness });
+const oak = material(0x503022);
+const walnut = material(0x2b1c18);
+const stone = material(0x625249, .38);
+const bronze = material(0xb58953, .27, .72);
+const china = material(0xf4e5cd, .35);
+const fabric = material(0x55463a);
+const foliage = [material(0x354f36), material(0x536541), material(0x223f2e)];
+const glow = new T.MeshBasicMaterial({ color: 0xffd3a0 });
+const glass = new T.MeshPhysicalMaterial({
+  color: 0xdfebef, transparent: true, opacity: .13, roughness: .19,
+  metalness: .3, depthWrite: false, side: T.DoubleSide
+});
+const boxGeo = new T.BoxGeometry();
+const cylinderGeo = new T.CylinderGeometry(1, 1, 1, 28);
+const ballGeo = new T.SphereGeometry(1, 10, 8);
+function mesh(geometry, surface, position, scale, parent = scene) {
+  const object = new T.Mesh(geometry, surface);
+  object.position.set(...position);
+  object.scale.set(...scale);
+  object.castShadow = surface !== glass && surface !== glow;
+  object.receiveShadow = surface !== glass;
+  parent.add(object);
+  return object;
+}
+const box = (m, x,y,z, a,b,c, p) => mesh(boxGeo,m,[x,y,z],[a,b,c],p);
+const disc = (m, x,y,z, r,h, p) => mesh(cylinderGeo,m,[x,y,z],[r,h,r],p);
+
+box(stone,0,-.15,0,22,.3,16);
+box(oak,0,-.14,11.4,22,.28,6.8);
+const roof = box(walnut,0,4.67,-.5,22,.23,15);
+box(walnut,0,2.25,-8,22,4.55,.24);
+box(walnut,-11,2.25,0,.24,4.55,16);
+for (let x=-10.8;x<=10.9;x+=.45) box(oak,x,2.25,-7.84,.11,4.5,.09);
+for (let i=0;i<25;i++) box(walnut,-10.8+i*.45,.003,11.4,.018,.008,6.7);
+for (const z of [-6,-3.6,-1.2,1.2,3.6,6]) {
+  box(bronze,10.95,2.25,z,.12,4.5,.09);
+  box(glass,10.95,2.25,z+1.2,.035,4.4,2.37);
+  box(bronze,4.1,2.25,z,.075,4.5,.095);
+  if (z !== 1.2) box(glass,4.1,2.25,z+1.2,.025,4.43,2.33);
+}
+for (const x of [-10,-7.5,-5,-2.5,0,2.5,5,7.5,10]) {
+  box(bronze,x,2.25,7.93,.075,4.5,.075);
+  if (x>=-7.5 && x!==0 && x!==2.5) box(glass,x-1.25,2.24,7.94,2.4,4.43,.022);
+  box(bronze,x,.5,14.7,.065,1,.065);
+}
+box(bronze,0,1,14.7,22,.06,.06);
+box(glass,0,.53,14.7,22,.9,.025);
+box(walnut,-3.4,.56,-6.05,9,1.12,.95);
+box(stone,-3.4,1.14,-6.05,9.2,.13,1.1);
+for (const y of [1.7,2.35,3]) {
+  box(oak,-3.4,y,-7.51,8.55,.09,.49);
+  box(glow,-3.4,y-.06,-7.29,8.45,.025,.025);
+  for(let i=0;i<23;i++) disc(i%4===0?bronze:foliage[i%3],-7.3+i*.35,y+.18,-7.54,.055+(i%3)*.012,.29);
+}
+box(oak,-9.35,.49,5.45,1.6,.98,.76);
+box(stone,-9.35,1.02,5.45,1.72,.09,.85);
+
+function planter(x,z) {
+  disc(walnut,x,.27,z,.38,.54);
+  for (let i=0;i<8;i++) {
+    const angle = i*2.4;
+    const leaf = mesh(ballGeo,foliage[i%3],[x+Math.cos(angle)*.24,.78+i%3*.16,z+Math.sin(angle)*.24],[.094,.33,.13]);
+    leaf.rotation.z = Math.sin(angle)*.68;
+    leaf.rotation.x = Math.cos(angle)*.68;
+  }
+}
+for(const [x,z] of [[-10,7],[10,7],[-10,13.8],[10,13.8],[4.85,-6.8],[10,5.5]]) planter(x,z);
+
+const layout = [
+  ...[-8.45,-5.25,-2.05,1.15].flatMap(x=>[-3.5,0,3.65].map(z=>[x,z])),
+  ...[-7,0,7].flatMap(x=>[10.05,12.9].map(z=>[x,z])),
+  [7.45,-3.15],[7.45,3.15]
+];
+const pickables = [];
+const highlights = [];
+for (const [i,[x,z]] of layout.entries()) {
+  const table = tables[i];
+  const group = new T.Group();
+  group.position.set(x,0,z);
+  scene.add(group);
+  const radius = table.capacity===6?.92:table.capacity===4?.71:.5;
+  const top = disc(i>=18?stone:oak,0,.76,0,radius,.085,group);
+  top.userData.tableId = table.id;
+  pickables.push(top);
+  disc(bronze,0,.08,0,.31,.055,group);
+  disc(walnut,0,.38,0,.083,.68,group);
+  const highlight = disc(glow,0,.026,0,radius+.15,.018,group);
+  highlight.visible = false;
+  highlights.push(highlight);
+  for (let j=0;j<table.capacity;j++) {
+    const angle = Math.PI*2*j/table.capacity + Math.PI/4;
+    const chair = new T.Group();
+    chair.position.set(Math.sin(angle)*(radius+.34),0,Math.cos(angle)*(radius+.34));
+    chair.rotation.y = angle;
+    group.add(chair);
+    box(fabric,0,.45,0,.43,.12,.42,chair);
+    box(fabric,0,.67,.185,.435,.4,.08,chair);
+    for (const a of [-.16,.16]) for (const b of [-.15,.15])
+      box(walnut,a,.21,b,.044,.42,.044,chair);
+    const px = Math.sin(angle)*(radius-.18), pz = Math.cos(angle)*(radius-.18);
+    disc(china,px,.81,pz,.125,.025,group);
+    disc(glass,px*.73,.875,pz*.73,.031,.11,group);
+  }
+  disc(bronze,0,.85,0,.046,.095,group);
+  disc(glow,0,.91,0,.016,.025,group);
+}
+for (const [x,z] of [[-7,-2],[-2,-2],[-7,3],[-2,3],[7,-3],[7,3]]) {
+  disc(bronze,x,4.18,z,.018,.8);
+  const ring = new T.Mesh(new T.TorusGeometry(.59,.023,8,48),glow);
+  ring.position.set(x,3.75,z);
+  ring.rotation.x = Math.PI/2;
+  scene.add(ring);
+  const light = new T.PointLight(0xffba78,23,12,2);
+  light.position.set(x,3.48,z);
+  scene.add(light);
+}
+
+box(material(0x314343,.36),0,-.53,19,150,.23,100);
+for(let i=0;i<37;i++) {
+  const x = -33 + i*2.4, z = 25 + (i%5)*2.7;
+  mesh(ballGeo,foliage[i%3],[x,1.2,z],[1.4,1.8+(i%5)*.55,1.7]);
+}
+const ambient = new T.HemisphereLight(0x88a8da,0x7b4f31,1.55);
+scene.add(ambient);
+const sun = new T.DirectionalLight(0xffd2ab,1.9);
+sun.position.set(12,16,18);
+sun.castShadow = true;
+Object.assign(sun.shadow.camera,{left:-18,right:18,top:18,bottom:-18});
+sun.shadow.mapSize.set(1024,1024);
+sun.shadow.normalBias = .035;
+scene.add(sun);
+
+const views = {
+  overview: [[17,13,25],[0,.5,3]],
+  hall: [[2,2.8,6],[-3,1.4,-3]],
+  terrace: [[9,3.7,13],[-2,1.3,8.8]],
+  vip: [[9.8,2.65,5.65],[7.3,1.25,-2]]
+};
+camera.position.set(...views.overview[0]);
+controls.target.set(...views.overview[1]);
+let transition;
+function go(position,target) {
+  transition = {
+    start: performance.now(), position: camera.position.clone(), target: controls.target.clone(),
+    endPosition: new T.Vector3(...position), endTarget: new T.Vector3(...target)
+  };
+}
+controls.addEventListener('start',()=>{ transition = null; });
+document.querySelectorAll('[data-restaurant-view]').forEach(button=>button.addEventListener('click',()=>{
+  go(...views[button.dataset.restaurantView]);
+}));
+document.querySelector('#seat-view').addEventListener('click',()=>{
+  const index = tables.findIndex(table=>table.id===selected);
+  const [x,z] = layout[index];
+  go([x,1.19,z+.94],[x,1.17,z-1.65]);
+});
+const lightToggle = document.querySelector('#sunlight');
+function lightMode(day) {
+  scene.background = new T.Color(day?0xaebcca:0x66526a);
+  scene.fog = new T.FogExp2(scene.background,.013);
+  sun.intensity = day?3.05:1.05;
+  ambient.intensity = day?2.1:1.35;
+  lightToggle.setAttribute('aria-pressed',String(day));
+  lightToggle.textContent = day?'Вечер':'День';
+}
+lightMode(false);
+lightToggle.addEventListener('click',()=>lightMode(lightToggle.getAttribute('aria-pressed')==='false'));
+
+const ray = new T.Raycaster();
+const pointer = new T.Vector2();
+let down;
+renderer.domElement.addEventListener('pointerdown',event=>{ down=[event.clientX,event.clientY]; });
+renderer.domElement.addEventListener('pointerup',event=>{
+  if (!down || Math.hypot(event.clientX-down[0],event.clientY-down[1])>7) return;
+  const rect = renderer.domElement.getBoundingClientRect();
+  pointer.set((event.clientX-rect.left)/rect.width*2-1,1-(event.clientY-rect.top)/rect.height*2);
+  ray.setFromCamera(pointer,camera);
+  const hit = ray.intersectObjects(pickables)[0];
+  if (!hit) return;
+  selected = hit.object.userData.tableId;
+  renderTables();
+  renderSummary();
+});
+new ResizeObserver(()=>{
+  const {clientWidth:w,clientHeight:h} = stage;
+  if (!w || !h) return;
+  camera.aspect = w/h;
+  camera.updateProjectionMatrix();
+  renderer.setSize(w,h,false);
+}).observe(stage);
+renderer.setAnimationLoop(()=>{
+  if (transition) {
+    const time = Math.min((performance.now()-transition.start)/780,1);
+    const ease = time*time*(3-2*time);
+    camera.position.lerpVectors(transition.position,transition.endPosition,ease);
+    controls.target.lerpVectors(transition.target,transition.endTarget,ease);
+    if (time===1) transition = null;
+  }
+  highlights.forEach((mesh,index)=>{ mesh.visible = tables[index].id===selected; });
+  roof.visible = camera.position.y < 4.5;
+  controls.update();
+  renderer.render(scene,camera);
+});
+stage.classList.add('ready');
+document.querySelector('#restaurant-views').hidden = false;
+document.querySelector('#restaurant-status').hidden = true;
+</script>
+</body></html>
