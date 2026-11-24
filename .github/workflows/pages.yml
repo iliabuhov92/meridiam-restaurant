@@ -29,8 +29,10 @@ jobs:
           for (const [, source] of scripts) new Script(source, { filename: 'index.html' });
           JS
           mkdir -p dist
-          cp -R index.html assets dist/
+          node --check table/scene.mjs
+          cp -R index.html assets table dist/
           test -s dist/assets/dining-models.glb
+          test -s dist/assets/table-furniture.glb
       - uses: actions/upload-pages-artifact@v3
         if: github.ref == 'refs/heads/main'
         with:

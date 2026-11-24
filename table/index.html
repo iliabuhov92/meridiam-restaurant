@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>МЕРИДИАМ · Сервированный стол</title>
+  <style>
+    *{box-sizing:border-box}
+    body{margin:0;background:#13110f;color:#efe7db;font:15px/1.45 system-ui,sans-serif}
+    main{width:100%;height:100svh;min-height:410px;position:relative;isolation:isolate}
+    canvas{display:block;width:100%;height:100%;touch-action:none;outline:none}
+    header,footer{position:absolute;left:0;right:0;z-index:1;padding:clamp(14px,3vw,40px);pointer-events:none}
+    header{top:0;background:linear-gradient(#100d0cb8,transparent)}
+    header span{display:block;letter-spacing:.23em;font-size:.75rem;color:#e2c6a2}
+    h1{font-size:clamp(1.15rem,2.1vw,1.8rem);font-weight:450;margin:6px 0 0}
+    footer{bottom:0;display:flex;gap:9px;flex-wrap:wrap;background:linear-gradient(transparent,#100d0ccd)}
+    button,a{pointer-events:auto;color:inherit;text-decoration:none;border:1px solid #e5c9a65e;background:#211914c9;border-radius:7px;padding:8px 13px;font:inherit;cursor:pointer}
+    button[aria-pressed="true"]{border-color:#edc391;background:#513b29}
+    #status{position:absolute;inset:0;display:grid;place-items:center;padding:20px;text-align:center;pointer-events:none}
+    #status[hidden]{display:none}
+  </style>
+  <script type="importmap">
+    {"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/"}}
+  </script>
+</head>
+<body>
+  <main id="stage">
+    <header><span>МЕРИДИАМ</span><h1>Сервированный стол</h1></header>
+    <div id="status" role="status">Загружается 3D-сцена</div>
+    <footer aria-label="Ракурсы">
+      <button type="button" data-view="close" aria-pressed="true">Крупный план</button>
+      <button type="button" data-view="seat" aria-pressed="false">Место гостя</button>
+      <a href="../">Ресторан</a>
+    </footer>
+  </main>
+  <script type="module">
+    import('./scene.mjs').catch(error => {
+      document.querySelector('#status').textContent = 'Не удалось загрузить 3D-сцену.';
+      console.error(error);
+    });
+  </script>
+</body>
+</html>
