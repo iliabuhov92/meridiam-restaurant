@@ -33,6 +33,16 @@ jobs:
           cp -R index.html assets table dist/
           test -s dist/assets/dining-models.glb
           test -s dist/assets/table-furniture.glb
+      - name: Check table in Chromium
+        run: |
+          npm install --prefix "$RUNNER_TEMP/table-check" playwright@1.51.1
+          PLAYWRIGHT_MODULE="$RUNNER_TEMP/table-check/node_modules/playwright" node tools/check-table.cjs
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: table-browser-captures
+          path: table-captures/
+          if-no-files-found: ignore
       - uses: actions/upload-pages-artifact@v3
         if: github.ref == 'refs/heads/main'
         with:
