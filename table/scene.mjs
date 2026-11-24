@@ -10,7 +10,7 @@ renderer.setPixelRatio(Math.min(devicePixelRatio, compact ? 1.35 : 1.75));
 renderer.shadowMap.enabled = true;
 renderer.shadowMap.type = T.PCFSoftShadowMap;
 renderer.toneMapping = T.ACESFilmicToneMapping;
-renderer.toneMappingExposure = 1.08;
+renderer.toneMappingExposure = .87;
 renderer.domElement.setAttribute('aria-label', 'Интерактивная трёхмерная модель сервированного стола');
 stage.prepend(renderer.domElement);
 
@@ -29,7 +29,8 @@ const standard = (color, roughness, metalness = 0) =>
 const brass = standard(0xb9824c, .27, .88);
 const darkMetal = standard(0x3c261a, .34, .68);
 const porcelain = new T.MeshPhysicalMaterial({color:0xf5ecdc,roughness:.18,clearcoat:.42});
-const textile = standard(0xd0b28d, .91);
+const textile = standard(0x9d8065, .92);
+const linen = standard(0xcac2b1, .91);
 const wood = standard(0x3e2318,.49);
 
 function hash(x,y) {
@@ -68,16 +69,16 @@ function mineral(x,y) {
   const cloudy=noise(x*5+4,y*5+7)*17 + noise(x*15,y*15)*8 + noise(x*62,y*62)*5;
   const turbulence=(noise(x*4+8,y*4+7)-.5)*.4+(noise(x*12,y*12)-.5)*.085;
   const path=x*.88+y*.54+turbulence;
-  const fault=Math.abs(Math.sin(Math.PI*(path*3.05+.08)));
-  const hairline=Math.exp(-fault*48);
-  const halo=Math.exp(-fault*9);
+  const fault=Math.abs(Math.sin(Math.PI*(path*3.05+.08+(noise(x*36,y*36)-.5)*.017)));
+  const hairline=Math.exp(-fault*77);
+  const halo=Math.exp(-fault*16);
   const secondary=Math.exp(-Math.abs(Math.sin(Math.PI*(path*5.9+y*.26)))*68);
   return {
-    shade: 24+cloudy,
-    vein: (hairline*91+halo*32+secondary*47)*(.64+.6*noise(x*19,y*19))
+    shade: 11+cloudy*.79,
+    vein: (hairline*49+halo*9+secondary*23)*(.39+.76*noise(x*19,y*19))
   };
 }
-const marble = new T.MeshPhysicalMaterial({roughness:.31,clearcoat:.38,clearcoatRoughness:.23});
+const marble = new T.MeshPhysicalMaterial({roughness:.38,clearcoat:.32,clearcoatRoughness:.29});
 marble.map=texture(compact?512:1024,(x,y)=>{
   const {shade,vein}=mineral(x,y);
   return [shade*1.19+vein,shade*.97+vein*.72,shade*.79+vein*.46];
@@ -88,10 +89,10 @@ marble.roughnessMap=texture(256,(x,y)=>{
   return [rough,rough,rough];
 });
 marble.bumpMap=texture(512,(x,y)=>{
-  const value=119+mineral(x,y).vein*.10+noise(x*150,y*150)*16;
+  const value=119+mineral(x,y).vein*.017+noise(x*150,y*150)*16;
   return [value,value,value];
 });
-marble.bumpScale=.0028;
+marble.bumpScale=.0014;
 
 const weave=texture(128,(u,v,x,y)=>{
   const warp=Math.sin(u*Math.PI*64),weft=Math.sin(v*Math.PI*64);
@@ -101,7 +102,9 @@ const weave=texture(128,(u,v,x,y)=>{
 });
 weave.repeat.set(7,6);
 textile.bumpMap=weave;
-textile.bumpScale=.009;
+textile.bumpScale=.004;
+linen.bumpMap=weave;
+linen.bumpScale=.0018;
 textile.roughnessMap=weave;
 textile.roughness=.98;
 
@@ -131,7 +134,7 @@ reflectionCard(0xffd4a4,15,.16,.36,[.3,1.25,1.5],[0,1,0]);
 const pmrem=new T.PMREMGenerator(renderer);
 const environment=pmrem.fromScene(room,.035);
 scene.environment=environment.texture;
-scene.environmentIntensity=.61;
+scene.environmentIntensity=.43;
 room.dispose();
 pmrem.dispose();
 
@@ -146,7 +149,12 @@ for(let i=-5;i<=5;i++) {
   box(wood,0,.001,i*1.08,13,.003,.005);
   box(wood,i*1.08,.001,0,.005,.003,13);
 }
+wood.map=texture(256,(u,v)=>{
+  const fiber=noise(u*59,v*4)*30+noise(u*111,v*25)*18;
+  return [143+fiber,132+fiber,124+fiber];
+},true);
 box(wood,0,1.6,-3.65,12,3.2,.14);
+box(wood,-3.62,1.6,.4,.12,3.2,8.1);
 for(let i=-23;i<=23;i++) box(wood,i*.125,1.6,-3.53,.055,3.2,.085);
 box(brass,0,.057,-3.47,9,.022,.012);
 
@@ -173,9 +181,37 @@ lathe(brass,[[.119,.253],[.118,.26],[.077,.334],[.069,.338],[.024,.339],
   [.024,.334],[.07,.331],[.112,.253],[.119,.253]],0,0,0,lamp);
 const bulb=new T.MeshBasicMaterial({color:new T.Color(1,.57,.25).multiplyScalar(2.8)});
 lathe(bulb,[[0,.252],[.111,.252],[.111,.256],[0,.256]],0,0,0,lamp);
-const lampLight=new T.PointLight(0xffb970,8,2.4,2);
+const lampLight=new T.PointLight(0xffb970,2.3,1.7,2);
 lampLight.position.set(0,.236,0);
 lamp.add(lampLight);
+
+const vase=new T.Group();
+vase.position.set(.095,.77,-.11);
+table.add(vase);
+lathe(standard(0x3c4730,.25,.19),[[0,0],[.052,0],[.056,.012],[.061,.078],
+  [.048,.109],[.033,.134],[.031,.15],[.027,.151],[.028,.139],[.04,.109]],0,0,0,vase,48);
+const stemMaterial=standard(0x535d35,.8);
+const blossoms=[standard(0xb0a084,.87),standard(0xd1c1a0,.89),standard(0xe6d8b9,.85)];
+const petalForm=new T.SphereGeometry(1,6,5);
+for(let stemIndex=0;stemIndex<7;stemIndex++) {
+  const angle=stemIndex*2.39996;
+  const base=new T.Vector3(0,.035,0);
+  const tip=new T.Vector3(Math.sin(angle)*.079,.188+(stemIndex%3)*.041,Math.cos(angle)*.08);
+  const direction=tip.clone().sub(base);
+  const center=tip.clone().lerp(base,.5);
+  const stem=mesh(new T.CylinderGeometry(.0021,.003,direction.length(),5),stemMaterial,...center.toArray(),vase);
+  stem.quaternion.setFromUnitVectors(T.Object3D.DEFAULT_UP,direction.normalize());
+  for(let flower=0;flower<21;flower++) {
+    const yaw=flower*2.39996;
+    const pitch=Math.acos(1-2*(flower+.5)/21);
+    const px=Math.sin(pitch)*Math.cos(yaw),pz=Math.sin(pitch)*Math.sin(yaw);
+    const size=.032+(stemIndex%3)*.0035;
+    const petal=mesh(petalForm,blossoms[(flower+stemIndex)%3],tip.x+px*size,
+      tip.y+Math.cos(pitch)*size,tip.z+pz*size,vase);
+    petal.scale.set(.011,.007,.012);
+    petal.rotation.set(yaw,pitch,0);
+  }
+}
 
 const glassMat = new T.MeshPhysicalMaterial({
   color:0xffffff, transmission:1, roughness:.039, thickness:.002,
@@ -192,7 +228,7 @@ function placeSettings(goblet) {
     table.add(setting);
     lathe(porcelain,[[0,.004],[.069,.004],[.079,.001],[.09,.002],[.098,.006],
       [.135,.015],[.139,.021],[.135,.026],[.121,.026],[.098,.015],[.081,.01],[0,.01]],0,0,0,setting,72);
-    const napkin=mesh(new T.BoxGeometry(.145,.009,.073,8,1,4),textile,0,.023,.004,setting);
+    const napkin=mesh(new T.BoxGeometry(.145,.009,.073,8,1,4),linen,0,.023,.004,setting);
     const nodes=napkin.geometry.getAttribute('position');
     for(let i=0;i<nodes.count;i++) {
       const xPos=nodes.getX(i),zPos=nodes.getZ(i);
@@ -249,8 +285,8 @@ function spot(color,intensity,position,aim,angle,shadows=false) {
   }
   scene.add(key,key.target);
 }
-spot(0xffc78b,53,[.9,2.55,1.25],[0,.65,0],.59,true);
-spot(0xb8cef7,45,[-2.55,2.15,-.2],[0,.6,0],.71,true);
+spot(0xffc78b,40,[.9,2.55,1.25],[0,.65,0],.59,true);
+spot(0xb8cef7,26,[-2.55,2.15,-.2],[0,.6,0],.71,true);
 spot(0xf4ab62,23,[1.5,2.6,-2.7],[.2,.58,-.2],.84);
 spot(0xa56b4a,36,[-1,1.7,-1.2],[0,1.1,-3.6],.84);
 
@@ -273,14 +309,20 @@ for(const button of buttons) button.addEventListener('click',()=>{
     to:new T.Vector3(...view.position),target:new T.Vector3(...view.target)};
 });
 controls.addEventListener('start',()=>{ transition=null; indicate(); });
+let redraw=true;
+controls.addEventListener("change",()=>{ redraw=true; });
 function resize() {
+  redraw=true;
   camera.aspect=stage.clientWidth/stage.clientHeight;
   camera.updateProjectionMatrix();
   renderer.setSize(stage.clientWidth,stage.clientHeight,false);
 }
 new ResizeObserver(resize).observe(stage);
 resize();
+renderer.shadowMap.autoUpdate=false;
+renderer.shadowMap.needsUpdate=true;
 renderer.setAnimationLoop(()=>{
+  const moving=!!transition;
   if(transition) {
     const t=Math.min(1,(performance.now()-transition.start)/660);
     const mix=t*t*(3-2*t);
@@ -288,8 +330,11 @@ renderer.setAnimationLoop(()=>{
     controls.target.lerpVectors(transition.look,transition.target,mix);
     if(t===1) transition=null;
   }
-  controls.update();
-  renderer.render(scene,camera);
+  const changed=controls.update();
+  if(redraw || moving || changed) {
+    redraw=false;
+    renderer.render(scene,camera);
+    stage.dataset.scene='ready';
+    document.querySelector('#status').hidden=true;
+  }
 });
-stage.dataset.scene='ready';
-document.querySelector('#status').hidden=true;
