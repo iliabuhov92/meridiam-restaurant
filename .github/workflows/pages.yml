@@ -58,16 +58,20 @@ jobs:
     if: github.ref == 'refs/heads/main'
     needs: deploy
     runs-on: ubuntu-latest
-    timeout-minutes: 6
+    timeout-minutes: 10
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
       - uses: actions/setup-node@v4
         with:
           node-version: 22
       - name: Verify the published table in Chromium
         run: |
           npm install --prefix "$RUNNER_TEMP/table-check" playwright@1.51.1
-          PLAYWRIGHT_MODULE="$RUNNER_TEMP/table-check/node_modules/playwright" node tools/check-table.cjs "https://iliabuhov92.github.io/meridiam-restaurant/table/?build=$GITHUB_SHA"
+          mkdir -p "$RUNNER_TEMP/table-baseline"
+          git archive 17fc7971f6322ef2cc7ad11c45df66492e30b7a7 table assets | tar -xf - -C "$RUNNER_TEMP/table-baseline"
+          BASELINE_DIR="$RUNNER_TEMP/table-baseline" PLAYWRIGHT_MODULE="$RUNNER_TEMP/table-check/node_modules/playwright" node tools/check-table.cjs "https://iliabuhov92.github.io/meridiam-restaurant/table/?build=$GITHUB_SHA"
       - uses: actions/upload-artifact@v4
         if: always()
         with:

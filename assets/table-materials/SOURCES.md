@@ -13,3 +13,4 @@ The fabric color map is desaturated for tinting in the scene.
 - [Flos Bellhop technical drawing](https://japan.flos.com/wp-content/uploads/2020/06/BELLHOP.pdf): scale and assembly of a portable table light.
 
 All furniture and tableware meshes used here were built for the project. Catalog photographs and technical drawings are reference links only.
+- [Bigleaf Hydrangea, Duke Gardens](https://gardens.duke.edu/garden-talk/bigleaf-hydrangea/): four-lobed sterile florets and cluster structure.

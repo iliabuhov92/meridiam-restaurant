@@ -31,7 +31,7 @@ const standard = (color, roughness, metalness = 0) =>
   new T.MeshStandardMaterial({ color, roughness, metalness });
 const brass = standard(0xb9824c, .27, .88);
 const darkMetal = standard(0x3c261a, .34, .68);
-const porcelain = new T.MeshPhysicalMaterial({color:0xf5ecdc,roughness:.18,clearcoat:.42});
+const porcelain = new T.MeshPhysicalMaterial({color:0xe9e0d2,roughness:.245,clearcoat:.28});
 const textile = standard(0x9d8065, .92);
 const linen = standard(0xcac2b1, .91);
 const wood = standard(0x3e2318,.49);
@@ -92,7 +92,7 @@ textile.normalScale.set(.46,.46);
 textile.color.set(0xc9aa89);
 Object.assign(linen,fabricMaps);
 linen.normalScale.set(.21,.21);
-linen.color.set(0xfff1da);
+linen.color.set(0xd4bfa0);
 
 function mesh(geometry,material,x=0,y=0,z=0,parent=scene) {
   const item=new T.Mesh(geometry,material);
@@ -120,7 +120,7 @@ reflectionCard(0xffd5a2,4.6,.16,1.3,[1.73,1.61,-1.45],[0,.93,.24]);
 reflectionCard(0xffbd77,8,1.3,.85,[1.4,2.25,-.55],[0,.8,0]);
 reflectionCard(0xffd4a4,15,.16,.36,[.3,1.25,1.5],[0,1,0]);
 const pmrem=new T.PMREMGenerator(renderer);
-const environment=pmrem.fromScene(room,.035);
+const environment=pmrem.fromScene(room,.019);
 scene.environment=environment.texture;
 scene.environmentIntensity=.43;
 room.dispose();
@@ -164,7 +164,7 @@ const lamp=new T.Group();
 lamp.position.set(-.30,.77,-.20);
 table.add(lamp);
 const satinBrass=new T.MeshPhysicalMaterial({
-  color:0xa47141,metalness:.93,roughness:.32,anisotropy:.36,clearcoat:.11
+  color:0x986635,metalness:.92,roughness:.38,anisotropy:.21,clearcoat:.11
 });
 satinBrass.roughnessMap=texture(128,(u,v)=>{
   const grain=196+noise(u*220,v*12)*34;
@@ -186,37 +186,107 @@ lampLight.target.position.set(.035,0,.04);
 lamp.add(lampLight,lampLight.target);
 
 const vase=new T.Group();
-vase.position.set(.27,.77,-.22);
+vase.position.set(.31,.769,-.25);
 table.add(vase);
-lathe(standard(0x3c4730,.25,.19),[[0,0],[.052,0],[.056,.012],[.061,.078],
-  [.048,.109],[.033,.134],[.031,.15],[.027,.151],[.028,.139],[.04,.109]],0,0,0,vase,48);
-const stemMaterial=standard(0x535d35,.8);
-const blossoms=[standard(0xb0a084,.87),standard(0xd1c1a0,.89),standard(0xe6d8b9,.85)];
-const petalForm=new T.SphereGeometry(1,6,5);
-for(let stemIndex=0;stemIndex<7;stemIndex++) {
-  const angle=stemIndex*2.39996;
-  const base=new T.Vector3(0,.035,0);
-  const tip=new T.Vector3(Math.sin(angle)*.079,.188+(stemIndex%3)*.041,Math.cos(angle)*.08);
-  const direction=tip.clone().sub(base);
-  const center=tip.clone().lerp(base,.5);
-  const stem=mesh(new T.CylinderGeometry(.0021,.003,direction.length(),5),stemMaterial,...center.toArray(),vase);
-  stem.quaternion.setFromUnitVectors(T.Object3D.DEFAULT_UP,direction.normalize());
-  for(let flower=0;flower<21;flower++) {
-    const yaw=flower*2.39996;
-    const pitch=Math.acos(1-2*(flower+.5)/21);
-    const px=Math.sin(pitch)*Math.cos(yaw),pz=Math.sin(pitch)*Math.sin(yaw);
-    const size=.032+(stemIndex%3)*.0035;
-    const petal=mesh(petalForm,blossoms[(flower+stemIndex)%3],tip.x+px*size,
-      tip.y+Math.cos(pitch)*size,tip.z+pz*size,vase);
-    petal.scale.set(.011,.007,.012);
-    petal.rotation.set(yaw,pitch,0);
+lathe(new T.MeshPhysicalMaterial({color:0x424638,roughness:.27,clearcoat:.31}),
+  [[0,0],[.053,0],[.061,.006],[.067,.021],[.066,.047],[.055,.079],[.042,.099],
+    [.036,.106],[.033,.106],[.031,.102],[.036,.093],[.048,.074],[.060,.043],[0,.008]],
+  0,0,0,vase,72);
+const stemMaterial=standard(0x465336,.86);
+const leafMaterial=new T.MeshStandardMaterial({color:0x4a5830,roughness:.74,side:T.DoubleSide});
+const palette=[0xe0d4af,0xd4c79f,0xded2b4,0xc2bb8d].map(color=>
+  new T.MeshPhysicalMaterial({color,roughness:.92,sheen:1,sheenColor:0xffebc9,side:T.DoubleSide})
+);
+function petalGeometry(variant) {
+  const petals=new T.BufferGeometry();
+  const vertices=[], indices=[];
+  const columns=8, rows=8;
+  for(let petal=0;petal<4;petal++) {
+    const angle=petal*Math.PI/2+(petal%2?.09:-.045)*variant;
+    const start=vertices.length/3;
+    for(let row=0;row<=rows;row++){
+      const t=row/rows;
+      const length=.0135+t*.002*(variant-1);
+      const width=Math.pow(Math.sin(Math.PI*t),.75)*.0064;
+      for(let col=0;col<=columns;col++){
+        const u=col/columns*2-1;
+        const x=u*width;
+        const z=.0016+t*length;
+        const y=.0014*Math.sin(t*Math.PI)+t*t*(.0016+.0028*u*u)+
+          Math.cos(col*.9+petal)*.00045*t;
+        vertices.push(x*Math.cos(angle)+z*Math.sin(angle),y,z*Math.cos(angle)-x*Math.sin(angle));
+        if(row&&col){
+          const v=start+row*(columns+1)+col;
+          indices.push(v-columns-2,v-1,v,v-columns-2,v,v-columns-1);
+        }
+      }
+    }
   }
+  petals.setAttribute('position',new T.Float32BufferAttribute(vertices,3));
+  petals.setIndex(indices);
+  petals.computeVertexNormals();
+  return petals;
+}
+const clusters=[
+  [-.068,.181,.031,.055],[-.019,.224,.012,.058],[.045,.209,-.036,.048],
+  [.042,.163,.054,.039],[-.038,.16,-.036,.043]
+];
+const renderFlowers=[];
+const orientation=new T.Object3D();
+for(const [cluster,[x,y,z,radius]] of clusters.entries()){
+  const position=new T.Vector3(x,y,z);
+  const stemPoints=[new T.Vector3(0,.025,0),position.clone().multiplyScalar(.69),position];
+  mesh(new T.TubeGeometry(new T.CatmullRomCurve3(stemPoints),10,.0018,5,false),stemMaterial,0,0,0,vase);
+  for(let i=0;i<30;i++){
+    const angle=i*2.39996+cluster;
+    const up=.14+.86*(i+.5)/30;
+    const spread=Math.sqrt(1-up*up);
+    const direction=new T.Vector3(Math.cos(angle)*spread,up,Math.sin(angle)*spread);
+    const origin=position.clone().addScaledVector(direction,radius*(.89+hash(cluster,i)*.2));
+    origin.y-=.032;
+    orientation.position.copy(origin);
+    orientation.quaternion.setFromUnitVectors(T.Object3D.DEFAULT_UP,direction);
+    orientation.rotateY(angle);
+    orientation.scale.setScalar(.67+hash(i,cluster)*.51);
+    orientation.updateMatrix();
+    renderFlowers.push({matrix:orientation.matrix.clone(),variant:(i+cluster)%3});
+  }
+}
+for(let variant=0;variant<3;variant++){
+  const units=renderFlowers.filter(flower=>flower.variant===variant);
+  const petals=new T.InstancedMesh(petalGeometry(variant),palette[variant],units.length);
+  const centers=new T.InstancedMesh(new T.SphereGeometry(.0022,8,5),palette[3],units.length);
+  for(const [i,{matrix}] of units.entries()){
+    petals.setMatrixAt(i,matrix);
+    centers.setMatrixAt(i,matrix);
+  }
+  petals.castShadow=centers.castShadow=true;
+  petals.receiveShadow=true;
+  vase.add(petals,centers);
+}
+for(const [i,theta] of [-1.9,.1,1.7,3.4].entries()){
+  const leaf = new T.BufferGeometry();
+  const vectors=[], indices=[];
+  const length=.081+i*.008;
+  for(let row=0;row<=12;row++){
+    const t=row/12;
+    const w=Math.sin(Math.PI*t)*.019;
+    for(let j=-1;j<=1;j++){
+      vectors.push(j*w,.016*Math.sin(Math.PI*t)-Math.abs(j)*w*.23,t*length);
+    }
+    if(row){const a=(row-1)*3;indices.push(a,a+3,a+1,a+1,a+3,a+4,a+1,a+4,a+2,a+2,a+4,a+5)}
+  }
+  leaf.setAttribute('position',new T.Float32BufferAttribute(vectors,3));
+  leaf.setIndex(indices);
+  leaf.computeVertexNormals();
+  const blade=mesh(leaf,leafMaterial,0,.115+i*.008,0,vase);
+  blade.rotation.set(.23,theta,0);
 }
 
 const glassMat = new T.MeshPhysicalMaterial({
   color:0xffffff, transmission:1, roughness:.025, thickness:.00075,
   ior:1.49, opacity:1, attenuationDistance:Infinity,
-  envMapIntensity:1.72, specularIntensity:.95
+  envMapIntensity:2.3, specularIntensity:1
 });
 const cutlery=standard(0xcfc6b8,.26,.89);
 function utensil(outline) {
@@ -231,31 +301,85 @@ function utensil(outline) {
 }
 const knifeGeometry=utensil([[-.006,-.106],[.004,-.106],[.008,-.095],[.005,.002],
   [.011,.016],[.01,.079],[.004,.106],[-.011,.097],[-.012,.041],[-.006,-.001]]);
-const forkGeometry=utensil([[-.005,-.104],[.005,-.104],[.007,-.095],[.005,.031],
-  [.012,.047],[.012,.104],[.008,.104],[.007,.061],[.004,.061],[.003,.106],[-.001,.106],
-  [-.003,.061],[-.006,.061],[-.007,.104],[-.011,.104],[-.012,.05],[-.006,.031]]);
-const placements=[[.25,.42,0],[-.46,.05,1.48],[.24,-.43,Math.PI]];
+const forkGeometry=utensil([[-.005,-.104],[.005,-.104],[.007,-.095],[.005,.032],
+  [.014,.053],[.013,.101],[.0105,.104],[.009,.102],[.0085,.062],
+  [.0055,.061],[.005,.106],[.002,.108],[.001,.105],[.001,.062],
+  [-.002,.062],[-.0025,.106],[-.0055,.107],[-.0065,.104],[-.006,.062],
+  [-.009,.063],[-.0095,.101],[-.012,.103],[-.014,.1],[-.014,.05],[-.006,.032]]);
+const foldedCloth=linen.clone();
+foldedCloth.side=T.DoubleSide;
+const hem=new T.MeshStandardMaterial({color:0xa38a68,roughness:.97});
+function clothHeight(u,v) {
+  return .0015*Math.cos(u*8+v*3)+.0039*Math.sin(v*8+u*.88)**2+
+    .012*Math.pow(Math.max(0,u-.45)/.55,2)*Math.pow(Math.max(0,v-.1)/.9,2);
+}
+function napkinGeometry(layer) {
+  const width=24,height=14;
+  const points=[], indices=[],uv=[];
+  for(let y=0;y<=height;y++) for(let x=0;x<=width;x++){
+    const u=x/width,v=y/height;
+    points.push((u-.5)*(.158-layer*.011),clothHeight(u,v)+layer*.0031,
+      (v-.5)*(.086-layer*.007)+layer*.003);
+    uv.push(u,v);
+    if(x&&y){const i=points.length/3-1;indices.push(i-width-2,i-1,i,i-width-2,i,i-width-1)}
+  }
+  const geo=new T.BufferGeometry();
+  geo.setAttribute('position',new T.Float32BufferAttribute(points,3));
+  geo.setAttribute('uv',new T.Float32BufferAttribute(uv,2));
+  geo.setIndex(indices);
+  geo.computeVertexNormals();
+  return geo;
+}
+const clothLayers=[0,1,2].map(napkinGeometry);
+const stitching=new T.CatmullRomCurve3(Array.from({length:24},(_,i)=>{
+  const u=i/23;
+  return new T.Vector3((u-.5)*.143,clothHeight(u,.93)+.0069,.038);
+}));
+const seamGeometry=new T.TubeGeometry(stitching,25,.00069,5,false);
+const contactCanvas=document.createElement('canvas');
+contactCanvas.width=contactCanvas.height=64;
+const contactContext=contactCanvas.getContext('2d');
+const contactGradient=contactContext.createRadialGradient(32,32,2,32,32,31);
+for(const [offset,opacity] of [[0,.47],[.38,.33],[.72,.11],[1,0]])
+  contactGradient.addColorStop(offset,'rgba(13,7,4,'+opacity+')');
+contactContext.fillStyle=contactGradient;
+contactContext.fillRect(0,0,64,64);
+const contactTexture=new T.CanvasTexture(contactCanvas);
+function contact(parent,x,y,z,width,depth,opacity=1) {
+  const patch=new T.Mesh(new T.PlaneGeometry(width,depth),new T.MeshBasicMaterial({
+    map:contactTexture,transparent:true,depthWrite:false,opacity
+  }));
+  patch.position.set(x,y,z);
+  patch.rotation.x=-Math.PI/2;
+  patch.renderOrder=1;
+  parent.add(patch);
+}
+contact(table,-.30,.7693,-.20,.185,.185);
+contact(table,.31,.7693,-.25,.169,.169);
+const placements=[[.265,.41,0],[-.475,.035,1.48],[.235,-.435,Math.PI]];
+const foreground={};
 function placeSettings(goblet) {
-  for(const [x,z,angle] of placements) {
+  for(const [index,[x,z,angle]] of placements.entries()) {
     const setting=new T.Group();
-    setting.position.set(x,.77,z);
+    setting.position.set(x,.769,z);
     setting.rotation.y=angle;
     table.add(setting);
-    lathe(porcelain,[[0,.004],[.069,.004],[.079,.001],[.09,.002],[.098,.006],
-      [.135,.015],[.139,.021],[.135,.026],[.121,.026],[.098,.015],[.081,.01],[0,.01]],0,0,0,setting,72);
-    const napkin=mesh(new T.BoxGeometry(.145,.009,.073,8,1,4),linen,0,.023,.004,setting);
-    const nodes=napkin.geometry.getAttribute('position');
-    for(let i=0;i<nodes.count;i++) {
-      const xPos=nodes.getX(i),zPos=nodes.getZ(i);
-      nodes.setY(i,nodes.getY(i)+Math.cos(xPos*43+zPos*44)*.0032+Math.sin(zPos*51)*.0018);
-    }
-    napkin.geometry.computeVertexNormals();
-    mesh(forkGeometry,cutlery,-.167,.006,.02,setting).rotation.y=.03;
-    mesh(knifeGeometry,cutlery,.166,.006,.018,setting).rotation.y=-.04;
+    contact(setting,0,.0003,0,.308,.308,.8);
+    const plate=lathe(porcelain,[[0,.004],[.076,.004],[.081,0],[.091,0],[.099,.006],
+      [.12,.009],[.138,.015],[.141,.018],[.140,.021],[.133,.022],[.121,.019],
+      [.105,.013],[.093,.011],[0,.011]],0,0,0,setting,96);
+    contact(setting,0,.0117,.003,.167,.108,.56);
+    for(const layer of clothLayers) mesh(layer,foldedCloth,0,.0135,.003,setting);
+    mesh(seamGeometry,hem,0,.0135,.003,setting);
+    const fork=mesh(forkGeometry,cutlery,-.167,.0014,.02,setting);
+    fork.rotation.y=.03;
+    const knife=mesh(knifeGeometry,cutlery,.166,.0014,.018,setting);
+    knife.rotation.y=-.04;
+    contact(setting,.159,.00035,-.17,.104,.104,.73);
     const stemware=goblet.clone();
-    stemware.position.set(.145,0,-.145);
-    stemware.scale.setScalar(1);
+    stemware.position.set(.159,0,-.17);
     setting.add(stemware);
+    if(index===0) Object.assign(foreground,{plate,fork,knife,stemware});
   }
 }
 
@@ -274,6 +398,8 @@ for(const angle of [.25,2.2,4.55]) {
   seat.position.set(Math.sin(angle)*.937,0,Math.cos(angle)*.937);
   seat.rotation.y=angle;
   seat.scale.set(1.18,1.03,1.18);
+  for(const x of [-.206,.206]) for(const z of [-.207,.207])
+    contact(seat,x,.0012,z,.19,.19,.64);
   scene.add(seat);
 }
 placeSettings(goblet);
@@ -292,16 +418,17 @@ function spot(color,intensity,position,aim,angle,shadows=false) {
   }
   scene.add(key,key.target);
 }
-spot(0xffc78b,40,[.9,2.55,1.25],[0,.65,0],.59,true);
-spot(0xb8cef7,26,[-2.55,2.15,-.2],[0,.6,0],.71,true);
+spot(0xffcf9d,37,[.9,2.55,1.25],[0,.65,0],.59,true);
+spot(0xbbd1fa,31,[-2.55,2.15,-.2],[0,.6,0],.71,true);
 spot(0xf4ab62,23,[1.5,2.6,-2.7],[.2,.58,-.2],.84);
 spot(0xa56b4a,36,[-1,1.7,-1.2],[0,1.1,-3.6],.84);
 
 const shots={
   close:{position:[1.85,1.68,2.17],target:[0,.67,0]},
-  seat:{position:[.50,1.42,1.65],target:[-.06,.835,.075]}
+  seat:{position:[.53,1.36,1.68],target:[-.015,.865,.095]},
+  legacy:{position:[.51,1.22,1.03],target:[-.08,.79,-.25]}
 };
-const initial = qa && params.get('view') === 'seat' ? shots.seat : shots.close;
+const initial = qa ? shots[params.get('view')] ?? shots.close : shots.close;
 camera.position.fromArray(initial.position);
 controls.target.fromArray(initial.target);
 if(qa && params.has('orbit')) {
@@ -335,6 +462,51 @@ new ResizeObserver(resize).observe(viewport);
 resize();
 renderer.shadowMap.autoUpdate=false;
 renderer.shadowMap.needsUpdate=true;
+function screenPoints(object) {
+  const samples=[];
+  const point=new T.Vector3();
+  object.traverse(mesh=>{
+    if(!mesh.isMesh) return;
+    const verts=mesh.geometry.getAttribute('position');
+    const instances=mesh.isInstancedMesh ? mesh.count : 1;
+    const matrix=new T.Matrix4();
+    for(let i=0;i<instances;i++){
+      if(mesh.isInstancedMesh) mesh.getMatrixAt(i,matrix);
+      for(let j=0;j<verts.count;j++){
+        point.fromBufferAttribute(verts,j);
+        if(mesh.isInstancedMesh) point.applyMatrix4(matrix);
+        point.applyMatrix4(mesh.matrixWorld).project(camera);
+        samples.push([(point.x+1)*viewport.clientWidth/2,(1-point.y)*viewport.clientHeight/2]);
+      }
+    }
+  });
+  return samples;
+}
+function bounds(points) {
+  return points.reduce(([left,top,right,bottom],[x,y])=>
+    [Math.min(left,x),Math.min(top,y),Math.max(right,x),Math.max(bottom,y)],
+    [Infinity,Infinity,-Infinity,-Infinity]);
+}
+function measureFrame() {
+  const [width,height]=[viewport.clientWidth,viewport.clientHeight];
+  const items=Object.fromEntries(Object.entries(foreground).map(([name,model])=>[name,bounds(screenPoints(model))]));
+  const shade=bounds(screenPoints(lamp));
+  const flowers=bounds(screenPoints(vase));
+  return {width,height,camera:camera.position.toArray(),target:controls.target.toArray(),fov:camera.fov,
+    exposure:renderer.toneMappingExposure,items,shadeOverFlowersX:shade[2]-flowers[0]};
+}
+if(qa) window.meridiamTableCapture=(view,orbit=0)=>{
+  if(!Object.hasOwn(shots,view)) throw new RangeError('Unknown table view');
+  const frame=shots[view];
+  controls.target.fromArray(frame.target);
+  camera.position.fromArray(frame.position);
+  const offset=camera.position.clone().sub(controls.target);
+  offset.applyAxisAngle(T.Object3D.DEFAULT_UP,T.MathUtils.degToRad(orbit));
+  camera.position.copy(controls.target).add(offset);
+  transition=null;
+  stage.removeAttribute('data-measurement');
+  redraw=true;
+};
 renderer.setAnimationLoop(()=>{
   const moving=!!transition;
   if(transition) {
@@ -348,6 +520,8 @@ renderer.setAnimationLoop(()=>{
   if(redraw || moving || changed) {
     redraw=false;
     renderer.render(scene,camera);
+    if(qa) stage.dataset.measurement=JSON.stringify(measureFrame());
+    stage.dataset.camera=JSON.stringify(camera.position.toArray());
     stage.dataset.scene='ready';
     document.querySelector('#status').hidden=true;
   }

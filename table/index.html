@@ -38,7 +38,7 @@
   </main>
   <script type="module">
     if (new URLSearchParams(location.search).get('qa') === '1') document.body.dataset.qa = '';
-    import('./scene.mjs?v=4').catch(error => {
+    import('./scene.mjs?v=5').catch(error => {
       document.querySelector('#status').textContent = 'Не удалось загрузить 3D-сцену.';
       console.error(error);
     });
