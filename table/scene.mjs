@@ -4,6 +4,9 @@ import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
 
 const stage = document.querySelector('#stage');
+const viewport = document.querySelector('#scene-viewport');
+const params = new URLSearchParams(location.search);
+const qa = params.get('qa') === '1';
 const compact = matchMedia('(pointer: coarse), (max-width: 650px)').matches;
 const renderer = new T.WebGLRenderer({ antialias: true });
 renderer.setPixelRatio(Math.min(devicePixelRatio, compact ? 1.35 : 1.75));
@@ -12,7 +15,7 @@ renderer.shadowMap.type = T.PCFSoftShadowMap;
 renderer.toneMapping = T.ACESFilmicToneMapping;
 renderer.toneMappingExposure = .87;
 renderer.domElement.setAttribute('aria-label', 'Интерактивная трёхмерная модель сервированного стола');
-stage.prepend(renderer.domElement);
+viewport.prepend(renderer.domElement);
 
 const scene = new T.Scene();
 scene.background = new T.Color(0x191512);
@@ -111,7 +114,9 @@ function reflectionCard(color,power,width,height,position,lookAt) {
   item.lookAt(...lookAt);
   room.add(item);
 }
-reflectionCard(0xb4cfff,7,2.1,2.7,[-2.5,1.8,1.6],[0,.8,0]);
+reflectionCard(0xc2d7f6,6.2,1.55,2.25,[-2.5,1.8,1.6],[0,.8,0]);
+reflectionCard(0xffffff,9,.11,1.76,[-1.85,1.55,.85],[0,.91,0]);
+reflectionCard(0xffd5a2,4.6,.16,1.3,[1.73,1.61,-1.45],[0,.93,.24]);
 reflectionCard(0xffbd77,8,1.3,.85,[1.4,2.25,-.55],[0,.8,0]);
 reflectionCard(0xffd4a4,15,.16,.36,[.3,1.25,1.5],[0,1,0]);
 const pmrem=new T.PMREMGenerator(renderer);
@@ -156,21 +161,32 @@ lathe(darkMetal,[[0,.008],[.288,.008],[.312,.016],[.312,.033],[.301,.041],
 lathe(brass,[[.288,.024],[.311,.024],[.31,.032],[.288,.033]],0,0,0,table);
 
 const lamp=new T.Group();
-lamp.position.set(-.10,.771,-.17);
+lamp.position.set(-.30,.77,-.20);
 table.add(lamp);
-lathe(brass,[[0,0],[.072,0],[.079,.008],[.077,.017],[.062,.024],
-  [.014,.025],[.012,.274],[.020,.277],[0,.28]],0,0,0,lamp);
-lathe(brass,[[.119,.253],[.118,.26],[.077,.334],[.069,.338],[.024,.339],
-  [.024,.334],[.07,.331],[.112,.253],[.119,.253]],0,0,0,lamp);
-const bulb=new T.MeshBasicMaterial({color:new T.Color(1,.57,.25).multiplyScalar(2.8)});
-lathe(bulb,[[0,.252],[.111,.252],[.111,.256],[0,.256]],0,0,0,lamp);
-const lampLight=new T.SpotLight(0xffb780,1.5,1.2,1.08,.86,2);
-lampLight.position.set(0,.236,0);
-lampLight.target.position.set(0,0,0);
+const satinBrass=new T.MeshPhysicalMaterial({
+  color:0xa47141,metalness:.93,roughness:.32,anisotropy:.36,clearcoat:.11
+});
+satinBrass.roughnessMap=texture(128,(u,v)=>{
+  const grain=196+noise(u*220,v*12)*34;
+  return [grain,grain,grain];
+});
+lathe(darkMetal,[[0,0],[.064,0],[.067,.002],[.067,.006],[0,.006]],0,0,0,lamp);
+lathe(satinBrass,[[0,.004],[.064,.004],[.069,.007],[.069,.012],[.066,.016],[.058,.020],
+  [.013,.023],[.009,.029],[.009,.213],[.012,.217],[.020,.217],[0,.219]],0,0,0,lamp);
+lathe(satinBrass,[[.099,.207],[.102,.207],[.102,.210],[.099,.217],[.091,.231],
+  [.074,.248],[.065,.252],[.052,.254],[0,.254],[0,.249],[.052,.249],
+  [.064,.247],[.070,.243],[.090,.226],[.098,.210],[.099,.207]],0,0,0,lamp);
+const bulb=new T.MeshStandardMaterial({
+  color:0xffe5ca,roughness:.55,emissive:0xffbc78,emissiveIntensity:1.4
+});
+lathe(bulb,[[0,.210],[.091,.210],[.091,.213],[0,.213]],0,0,0,lamp);
+const lampLight=new T.SpotLight(0xffbe89,1.32,1.3,1.04,.88,2);
+lampLight.position.set(0,.190,0);
+lampLight.target.position.set(.035,0,.04);
 lamp.add(lampLight,lampLight.target);
 
 const vase=new T.Group();
-vase.position.set(.095,.77,-.11);
+vase.position.set(.27,.77,-.22);
 table.add(vase);
 lathe(standard(0x3c4730,.25,.19),[[0,0],[.052,0],[.056,.012],[.061,.078],
   [.048,.109],[.033,.134],[.031,.15],[.027,.151],[.028,.139],[.04,.109]],0,0,0,vase,48);
@@ -198,9 +214,9 @@ for(let stemIndex=0;stemIndex<7;stemIndex++) {
 }
 
 const glassMat = new T.MeshPhysicalMaterial({
-  color:0xffffff, transmission:1, roughness:.039, thickness:.002,
-  ior:1.48, opacity:1, attenuationDistance:1.6, attenuationColor:0xf1f8fb,
-  envMapIntensity:1.2
+  color:0xffffff, transmission:1, roughness:.025, thickness:.00075,
+  ior:1.49, opacity:1, attenuationDistance:Infinity,
+  envMapIntensity:1.72, specularIntensity:.95
 });
 const cutlery=standard(0xcfc6b8,.26,.89);
 function utensil(outline) {
@@ -238,12 +254,12 @@ function placeSettings(goblet) {
     mesh(knifeGeometry,cutlery,.166,.006,.018,setting).rotation.y=-.04;
     const stemware=goblet.clone();
     stemware.position.set(.145,0,-.145);
-    stemware.scale.setScalar(1.13);
+    stemware.scale.setScalar(1);
     setting.add(stemware);
   }
 }
 
-const {scene:assets}=await new GLTFLoader().loadAsync('../assets/table-furniture.glb?v=2');
+const {scene:assets}=await new GLTFLoader().loadAsync('../assets/table-furniture.glb?v=4');
 const chair=assets.getObjectByName('DiningChair');
 const goblet=assets.getObjectByName('WineGlass');
 if(!chair || !goblet) throw new Error('Dining asset nodes are missing.');
@@ -283,10 +299,16 @@ spot(0xa56b4a,36,[-1,1.7,-1.2],[0,1.1,-3.6],.84);
 
 const shots={
   close:{position:[1.85,1.68,2.17],target:[0,.67,0]},
-  seat:{position:[.51,1.22,1.03],target:[-.08,.79,-.25]}
+  seat:{position:[.50,1.42,1.65],target:[-.06,.835,.075]}
 };
-camera.position.fromArray(shots.close.position);
-controls.target.fromArray(shots.close.target);
+const initial = qa && params.get('view') === 'seat' ? shots.seat : shots.close;
+camera.position.fromArray(initial.position);
+controls.target.fromArray(initial.target);
+if(qa && params.has('orbit')) {
+  const offset = camera.position.clone().sub(controls.target);
+  offset.applyAxisAngle(T.Object3D.DEFAULT_UP, T.MathUtils.degToRad(20));
+  camera.position.copy(controls.target).add(offset);
+}
 controls.update();
 let transition;
 const buttons=[...document.querySelectorAll('[data-view]')];
@@ -304,11 +326,12 @@ let redraw=true;
 controls.addEventListener("change",()=>{ redraw=true; });
 function resize() {
   redraw=true;
-  camera.aspect=stage.clientWidth/stage.clientHeight;
+  camera.aspect=viewport.clientWidth/viewport.clientHeight;
+  camera.fov=compact ? T.MathUtils.clamp(45/camera.aspect,48,76) : 37;
   camera.updateProjectionMatrix();
-  renderer.setSize(stage.clientWidth,stage.clientHeight,false);
+  renderer.setSize(viewport.clientWidth,viewport.clientHeight,false);
 }
-new ResizeObserver(resize).observe(stage);
+new ResizeObserver(resize).observe(viewport);
 resize();
 renderer.shadowMap.autoUpdate=false;
 renderer.shadowMap.needsUpdate=true;

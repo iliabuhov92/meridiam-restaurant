@@ -2,6 +2,7 @@
 import math
 import pathlib
 import bpy
+import bmesh
 from mathutils import Vector
 
 bpy.ops.wm.read_factory_settings(use_empty=True)
@@ -34,6 +35,11 @@ def mesh(name, verts, faces, mat, parent):
     bpy.context.collection.objects.link(obj)
     obj.parent = parent
     data.materials.append(mat)
+    topology = bmesh.new()
+    topology.from_mesh(data)
+    bmesh.ops.recalc_face_normals(topology, faces=list(topology.faces))
+    topology.to_mesh(data)
+    topology.free()
     for p in data.polygons:
         p.use_smooth = True
     return obj
@@ -78,12 +84,12 @@ def tube(name, points, radius, mat, parent, close=False):
     return obj
 
 chair = root('DiningChair')
-angles = [math.radians(-116+i*232/40) for i in range(41)]
+angles = [math.radians(-116+i*232/72) for i in range(73)]
 shell = []
 for t, (rx,ry,z) in enumerate([
-    (.209,.205,.43),(.229,.219,.455),(.244,.231,.51),(.254,.239,.59),
-    (.259,.245,.7),(.258,.247,.766),(.251,.242,.784),(.237,.226,.775),
-    (.226,.213,.745),(.226,.203,.64),(.222,.198,.53),(.208,.19,.455)
+    (.209,.205,.429),(.232,.224,.451),(.253,.243,.501),(.266,.254,.592),
+    (.271,.263,.705),(.269,.265,.774),(.261,.257,.796),(.244,.236,.79),
+    (.23,.218,.754),(.223,.205,.644),(.223,.196,.528),(.213,.191,.452)
 ]):
     ring=[]
     for a in angles:
@@ -91,16 +97,17 @@ for t, (rx,ry,z) in enumerate([
         ring.append((rx*math.sin(a),-ry*math.cos(a),z-drop*min(1,t/4,(11-t)/2)))
     shell.append(ring)
 loft('Wraparound upholstery',shell+[shell[0]],fabric,chair)
-tube('Upper piping',shell[6],.0028,seam,chair)
+tube('Upper piping',shell[6],.0016,seam,chair)
+tube('Low back seam',shell[2][4:-4],.0012,seam,chair)
 rings=[]
-for radius,z in [(0,.419),(.86,.415),(.98,.431),(1,.454),(.97,.476),(.83,.491),(0,.501)]:
+for radius,z in [(0,.415),(.8,.414),(.96,.422),(1,.439),(.996,.458),(.98,.477),(.91,.485),(.73,.486),(0,.48)]:
     rings.append([(radius*.232*math.sin(a),radius*.225*math.cos(a)+.012,z) for a in [i*math.tau/40 for i in range(40)]])
 loft('Seat cushion',rings,fabric,chair,True)
 tube('Cushion seam',rings[3],.0022,seam,chair,True)
 for x in [-1,1]:
     for y in [-1,1]:
         start=Vector((x*.206,y*.207,.005))
-        end=Vector((x*.159,y*.161,.423))
+        end=Vector((x*.136,y*.139,.421))
         bpy.ops.mesh.primitive_cone_add(vertices=10,radius1=.013,radius2=.018,depth=(end-start).length,location=(start+end)/2)
         obj=bpy.context.object
         obj.rotation_euler=(end-start).to_track_quat('Z','Y').to_euler()
@@ -110,13 +117,26 @@ for x in [-1,1]:
             face.use_smooth=len(face.vertices)==4
 
 goblet=root('WineGlass')
-profile=[(.001,0),(.029,0),(.035,.003),(.032,.006),(.013,.008),(.0035,.013),(.0028,.086),
-         (.007,.096),(.02,.107),(.033,.124),(.039,.147),(.038,.169),(.032,.186),(.029,.199),
-         (.028,.199),(.03,.184),(.036,.168),(.037,.148),(.031,.126),(.019,.109),(.003,.103)]
-loft('Crystal bowl, stem and foot',[
-    [(r*math.cos(a),r*math.sin(a),z) for a in [i*math.tau/24 for i in range(24)]]
+# Continuous profile, in metres. The inner bowl returns to the axis above the stem.
+profile=[(.00001,0),(.031,0),(.038,.0004),(.039,.0017),(.0383,.0032),
+         (.035,.0045),(.020,.006),(.009,.0075),(.0042,.010),(.0031,.017),
+         (.00245,.041),(.00233,.078),(.0027,.099),(.0039,.108),(.0078,.1115),
+         (.016,.116),(.025,.123),(.033,.131),(.0384,.141),(.0405,.151),
+         (.041,.163),(.0402,.174),(.038,.187),(.0352,.201),(.0328,.215),
+         (.0311,.228),(.0306,.2345),(.0301,.235),(.0297,.2347),(.0296,.2338),
+         (.0302,.2278),(.0318,.214),(.0342,.200),(.037,.187),(.0391,.174),
+         (.0399,.163),(.0393,.152),(.0371,.142),(.0318,.132),(.024,.124),
+         (.0149,.118),(.0062,.115),(.00001,.1148)]
+bowl=loft('Crystal bowl, stem and foot',[
+    [(r*math.cos(a),r*math.sin(a),z) for a in [i*math.tau/72 for i in range(72)]]
     for r,z in profile
 ],glass,goblet,True)
+topology = bmesh.new()
+topology.from_mesh(bowl.data)
+bmesh.ops.holes_fill(topology, edges=[edge for edge in topology.edges if edge.is_boundary])
+bmesh.ops.recalc_face_normals(topology, faces=list(topology.faces))
+topology.to_mesh(bowl.data)
+topology.free()
 
 bpy.ops.export_scene.gltf(
     filepath=str(pathlib.Path(__file__).resolve().parents[1]/'assets'/'table-furniture.glb'),
