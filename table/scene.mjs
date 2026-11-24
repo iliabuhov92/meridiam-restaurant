@@ -65,55 +65,31 @@ function texture(size, channels, color = false) {
   return result;
 }
 
-function mineral(x,y) {
-  const cloudy=noise(x*5+4,y*5+7)*17 + noise(x*15,y*15)*8 + noise(x*62,y*62)*5;
-  const turbulence=(noise(x*4+8,y*4+7)-.5)*.4+(noise(x*12,y*12)-.5)*.085;
-  const path=x*.88+y*.54+turbulence;
-  const fault=Math.abs(Math.sin(Math.PI*(path*3.05+.08+(noise(x*36,y*36)-.5)*.017)));
-  const hairline=Math.exp(-fault*77);
-  const halo=Math.exp(-fault*16);
-  const secondary=Math.exp(-Math.abs(Math.sin(Math.PI*(path*5.9+y*.26)))*68);
-  return {
-    shade: 11+cloudy*.79,
-    vein: (hairline*49+halo*9+secondary*23)*(.39+.76*noise(x*19,y*19))
-  };
+const textureLoader = new T.TextureLoader();
+async function materialMaps(name, repeat = 1) {
+  const files = ['color', 'normal', 'roughness'];
+  const maps = await Promise.all(files.map(file =>
+    textureLoader.loadAsync(new URL('../assets/table-materials/'+name+'-'+file+'.webp',import.meta.url).href)
+  ));
+  for(const map of maps) {
+    map.wrapS = map.wrapT = T.RepeatWrapping;
+    map.repeat.setScalar(repeat);
+    map.anisotropy = Math.min(8,renderer.capabilities.getMaxAnisotropy());
+  }
+  maps[0].colorSpace = T.SRGBColorSpace;
+  return {map:maps[0],normalMap:maps[1],roughnessMap:maps[2]};
 }
-const marble = new T.MeshPhysicalMaterial({roughness:.38,clearcoat:.32,clearcoatRoughness:.29});
-marble.map=texture(compact?512:1024,(x,y)=>{
-  const {shade,vein}=mineral(x,y);
-  return [shade*1.19+vein,shade*.97+vein*.72,shade*.79+vein*.46];
-},true);
-marble.roughnessMap=texture(256,(x,y)=>{
-  const {vein}=mineral(x,y);
-  const rough=210+noise(x*21,y*21)*30-vein*.24;
-  return [rough,rough,rough];
+const [stoneMaps,fabricMaps] = await Promise.all([materialMaps('stone'),materialMaps('linen',2.4)]);
+const marble = new T.MeshPhysicalMaterial({
+  ...stoneMaps, color:0xf4e1cc, roughness:.52, clearcoat:.25, clearcoatRoughness:.36
 });
-marble.bumpMap=texture(512,(x,y)=>{
-  const value=119+mineral(x,y).vein*.017+noise(x*150,y*150)*16;
-  return [value,value,value];
-});
-marble.bumpScale=.0014;
-
-const weave=texture(128,(u,v,x,y)=>{
-  const warp=Math.sin(u*Math.PI*64),weft=Math.sin(v*Math.PI*64);
-  const thread=(x>>2)+(y>>2)&1 ? warp : weft;
-  const value=135+thread*23+hash(x,y)*17;
-  return [value,value,value];
-});
-weave.repeat.set(7,6);
-textile.bumpMap=weave;
-textile.bumpScale=.004;
-linen.bumpMap=weave;
-linen.bumpScale=.0018;
-textile.roughnessMap=weave;
-textile.roughness=.98;
-textile.map=texture(128,(u,v,x,y)=>{
-  const warp=Math.sin(u*Math.PI*64),weft=Math.sin(v*Math.PI*64);
-  const thread=((x>>2)+(y>>2))&1 ? warp : weft;
-  const shade=214+thread*9+hash(x,y)*15;
-  return [shade,shade,shade];
-},true);
-textile.map.repeat.copy(weave.repeat);
+marble.normalScale.set(.25,.25);
+Object.assign(textile,fabricMaps);
+textile.normalScale.set(.46,.46);
+textile.color.set(0xc9aa89);
+Object.assign(linen,fabricMaps);
+linen.normalScale.set(.21,.21);
+linen.color.set(0xfff1da);
 
 function mesh(geometry,material,x=0,y=0,z=0,parent=scene) {
   const item=new T.Mesh(geometry,material);
@@ -148,9 +124,9 @@ pmrem.dispose();
 const floor=standard(0x56463b,.48);
 floor.map=marble.map.clone();
 floor.map.repeat.set(2,4);
-floor.bumpMap=marble.bumpMap.clone();
-floor.bumpMap.repeat.set(2,4);
-floor.bumpScale=.013;
+floor.normalMap=marble.normalMap.clone();
+floor.normalMap.repeat.set(2,4);
+floor.normalScale.set(.14,.14);
 box(floor,0,-.061,0,15,.12,15);
 for(let i=-5;i<=5;i++) {
   box(wood,0,.001,i*1.08,13,.003,.005);
@@ -188,9 +164,10 @@ lathe(brass,[[.119,.253],[.118,.26],[.077,.334],[.069,.338],[.024,.339],
   [.024,.334],[.07,.331],[.112,.253],[.119,.253]],0,0,0,lamp);
 const bulb=new T.MeshBasicMaterial({color:new T.Color(1,.57,.25).multiplyScalar(2.8)});
 lathe(bulb,[[0,.252],[.111,.252],[.111,.256],[0,.256]],0,0,0,lamp);
-const lampLight=new T.PointLight(0xffb970,2.3,1.7,2);
+const lampLight=new T.SpotLight(0xffb780,1.5,1.2,1.08,.86,2);
 lampLight.position.set(0,.236,0);
-lamp.add(lampLight);
+lampLight.target.position.set(0,0,0);
+lamp.add(lampLight,lampLight.target);
 
 const vase=new T.Group();
 vase.position.set(.095,.77,-.11);
@@ -225,7 +202,22 @@ const glassMat = new T.MeshPhysicalMaterial({
   ior:1.48, opacity:1, attenuationDistance:1.6, attenuationColor:0xf1f8fb,
   envMapIntensity:1.2
 });
-const cutlery=standard(0xcfc6b8,.22,.87);
+const cutlery=standard(0xcfc6b8,.26,.89);
+function utensil(outline) {
+  const shape=new T.Shape();
+  outline.forEach(([x,y],i)=>i ? shape.lineTo(x,y) : shape.moveTo(x,y));
+  shape.closePath();
+  const geometry=new T.ExtrudeGeometry(shape,{
+    depth:.0018,bevelEnabled:true,bevelThickness:.0011,bevelSize:.0011,bevelSegments:2,curveSegments:4
+  });
+  geometry.rotateX(-Math.PI/2);
+  return geometry;
+}
+const knifeGeometry=utensil([[-.006,-.106],[.004,-.106],[.008,-.095],[.005,.002],
+  [.011,.016],[.01,.079],[.004,.106],[-.011,.097],[-.012,.041],[-.006,-.001]]);
+const forkGeometry=utensil([[-.005,-.104],[.005,-.104],[.007,-.095],[.005,.031],
+  [.012,.047],[.012,.104],[.008,.104],[.007,.061],[.004,.061],[.003,.106],[-.001,.106],
+  [-.003,.061],[-.006,.061],[-.007,.104],[-.011,.104],[-.012,.05],[-.006,.031]]);
 const placements=[[.25,.42,0],[-.46,.05,1.48],[.24,-.43,Math.PI]];
 function placeSettings(goblet) {
   for(const [x,z,angle] of placements) {
@@ -239,19 +231,11 @@ function placeSettings(goblet) {
     const nodes=napkin.geometry.getAttribute('position');
     for(let i=0;i<nodes.count;i++) {
       const xPos=nodes.getX(i),zPos=nodes.getZ(i);
-      nodes.setY(i,nodes.getY(i)+Math.cos(xPos*62+zPos*12)*.0019);
+      nodes.setY(i,nodes.getY(i)+Math.cos(xPos*43+zPos*44)*.0032+Math.sin(zPos*51)*.0018);
     }
     napkin.geometry.computeVertexNormals();
-    for(const xPos of [-.161,.157]) {
-      box(cutlery,xPos,.008,.033,.009,.006,.125,setting);
-      if(xPos>0) {
-        box(cutlery,xPos-.008,.008,-.055,.021,.004,.069,setting);
-      } else {
-        box(cutlery,xPos,.008,-.034,.021,.004,.038,setting);
-        for(const offset of [-.009,-.003,.003,.009])
-          box(cutlery,xPos+offset,.008,-.063,.0025,.004,.032,setting);
-      }
-    }
+    mesh(forkGeometry,cutlery,-.167,.006,.02,setting).rotation.y=.03;
+    mesh(knifeGeometry,cutlery,.166,.006,.018,setting).rotation.y=-.04;
     const stemware=goblet.clone();
     stemware.position.set(.145,0,-.145);
     stemware.scale.setScalar(1.13);
