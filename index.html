@@ -1,17 +1,37 @@
 <!doctype html><html lang="ru"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>МЕРИДИАМ · RESTAURANT EXPERIENCE</title><style>
 :root{color-scheme:dark;--bg:#0b1115;--panel:#121a20;--line:#36444b;--blue:#9accf3;--gold:#cba978;--muted:#9da9ae}*{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse at 70% 0,#1e2a32,#0b1115 70%);color:#eaf0f2;font:15px/1.5 -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}button,input,select{font:inherit}button{cursor:pointer}button:disabled{opacity:.3;cursor:not-allowed}.top{padding:24px 30px 12px;display:flex;align-items:center;justify-content:space-between;gap:10px;border-bottom:1px solid #26333b}.brand{letter-spacing:.32em;font-size:21px;color:#deecfa}.sub{font-size:10px;letter-spacing:.18em;color:var(--muted)}.eyebrow{font-size:11px;letter-spacing:.22em;color:var(--blue)}.nav{display:flex;gap:8px;flex-wrap:wrap;align-items:center}.btn{border:1px solid #3e525d;border-radius:14px;background:#1b2830;color:#edf4f6;padding:10px 14px;transition:.2s}.btn:hover,.btn.active{border-color:#8bbdde;background:#29404d}.btn.primary{background:#bda17c;color:#111922;border-color:#bda17c;font-weight:700}.main{display:grid;grid-template-columns:minmax(0,1fr) 390px;min-height:calc(100vh - 85px)}.scene{padding:30px;min-width:0}.scene h1{font-size:clamp(25px,3vw,42px);font-weight:450;letter-spacing:.04em;margin:8px 0}.lede{color:#afbdc5;max-width:620px}.map{position:relative;margin-top:24px;min-height:560px;border:1px solid #42515b;border-radius:28px;overflow:hidden;background:radial-gradient(ellipse at 62% 18%,#4a3d30 0,#2b302f 34%,#18262c 75%);box-shadow:0 25px 80px #0005}.map:before{content:'';position:absolute;inset:8%;border:1px solid #bda17c55;border-radius:120px 20px 40px 30px;pointer-events:none}.map-label{position:absolute;letter-spacing:.18em;font-size:10px;color:#c9d6ddaa}.walk{position:absolute;left:47%;top:10%;width:13%;height:76%;border-left:1px dashed #bca77d40;border-right:1px dashed #bca77d40;transform:rotate(-10deg)}.terrace{position:absolute;top:4%;left:64%;width:32%;height:50%;border:1px dashed #b9bdad69;border-radius:20px;background:#4d514638}.vip{position:absolute;bottom:5%;right:5%;width:30%;height:30%;border:1px solid #d6b78577;border-radius:28px;background:#47392950}.bar{position:absolute;left:5%;top:7%;width:26%;height:7%;border-radius:16px;background:linear-gradient(90deg,#755639,#bc8c55);box-shadow:0 0 20px #d8a9692b}.table-dot{position:absolute;transform:translate(-50%,-50%);border-radius:50%;width:42px;height:42px;background:#254f45;border:2px solid #86c4b6;color:#ecf8ef;font-weight:700;box-shadow:0 3px 22px #050b0bbb}.table-dot.booked{background:#6a3438;border-color:#dc9295}.table-dot.selected{background:#265c83;border-color:#aaddff;box-shadow:0 0 0 7px #aaddff30,0 0 30px #8fcaff77}.table-dot:hover{transform:translate(-50%,-50%) scale(1.16)}.map-footer{display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px;margin-top:14px;color:#a5b5bc;font-size:12px}.dot{display:inline-block;width:8px;height:8px;border-radius:50%;background:#86c4b6;margin-right:6px}.details{border-left:1px solid #26333b;background:linear-gradient(180deg,#172128ee,#10171ddc);padding:26px;position:relative}.details h2{font-weight:500;margin:0 0 9px;font-size:26px}.quiet{color:var(--muted)}.row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}.stack{display:grid;gap:14px}.field{display:grid;gap:5px}.field label{font-size:12px;color:#afbbc1}.field input,.field select,.search{width:100%;padding:11px 12px;border-radius:12px;color:#e9f2f7;background:#101a20;border:1px solid #47565c}.divider{height:1px;background:#3a464d;margin:17px 0}.zone-title{font-size:13px;letter-spacing:.13em;color:#d8b989}.panel-overlay{position:fixed;z-index:10;right:18px;top:100px;bottom:20px;width:min(440px,calc(100vw - 36px));background:#12191ff7;border:1px solid #62747d;border-radius:24px;box-shadow:0 30px 110px #000c;display:flex;flex-direction:column;overflow:hidden}.panel-overlay.full{left:18px;width:auto;max-width:none}.panel-head{padding:18px 20px;border-bottom:1px solid #34424c;display:flex;align-items:center;justify-content:space-between;gap:8px}.panel-body{display:grid;grid-template-columns:1fr;gap:14px;padding:18px;overflow-y:auto}.panel-overlay.full .panel-body{grid-template-columns:250px 1fr}.categories{display:flex;gap:8px;overflow-x:auto;padding-bottom:6px}.panel-overlay.full .categories{display:grid;align-content:start;overflow:visible}.cat{white-space:nowrap;text-align:left;padding:9px 12px;border:1px solid #3e4a51;background:#19252b;color:#ecf0f3;border-radius:11px}.cat.active{border-color:#d8ad71;background:#4b3829}.dishes{display:grid;gap:10px;align-content:start}.panel-overlay.full .dishes{grid-template-columns:repeat(auto-fill,minmax(260px,1fr))}.dish{border:1px solid #34444e;background:#1b262d;border-radius:15px;padding:13px;display:flex;flex-direction:column;gap:8px}.dish-title{font-size:15px;font-weight:650}.dish-sub{font-size:11px;color:#afbcc1}.dish-actions{display:flex;align-items:center;justify-content:space-between;gap:7px}.chip{padding:5px 8px;border-radius:9px;background:#28343b;color:#c4d1d6;font-size:11px}.orderbox{padding:16px 18px;border-top:1px solid #3b4950;background:#141e25}.mini{font-size:12px;color:#c7d3d9}.hide{display:none!important}.footer-note{font-size:11px;color:#9aa8ae;margin-top:9px}.screen{position:fixed;z-index:15;inset:0;background:#071015c9;backdrop-filter:blur(4px);display:flex;justify-content:center;align-items:center;padding:16px}.modal{width:min(560px,100%);max-height:90vh;overflow:auto;border:1px solid #7c7770;border-radius:24px;background:#182329;padding:24px;box-shadow:0 35px 90px #000a}.muted{color:#b4c1c9}a{color:#acd4ee}.text-sm{font-size:12px}@media(max-width:980px){.main{display:block}.details{border:0;border-top:1px solid #3a464d}.scene{padding:20px}.map{min-height:480px}.top{padding:16px}.brand{font-size:17px}.panel-overlay{top:76px}.panel-overlay.full .panel-body{display:block}.panel-overlay.full .categories{display:flex;overflow:auto;margin-bottom:15px}.panel-overlay.full .dishes{grid-template-columns:1fr}}@media(max-width:500px){.top{display:block}.nav{margin-top:12px}.map{min-height:410px}.table-dot{width:32px;height:32px;font-size:11px}.panel-overlay.full{left:6px;right:6px;top:6px;bottom:6px}.panel-overlay{right:6px;top:100px;bottom:6px;width:calc(100vw - 12px)}.map-label{font-size:8px}.scene h1{font-size:26px}}
 </style><style>
-#restaurant-stage{position:relative;height:clamp(340px,59vh,780px);background:#1b1820;border-radius:16px;overflow:hidden;margin:16px 0 10px}
+#restaurant-stage{position:relative;height:calc(100svh - 94px);min-height:430px;background:#1b1820;border-radius:16px;overflow:hidden;margin:0}
 #restaurant-stage canvas{display:block;width:100%;height:100%;touch-action:none}
 #restaurant-status{position:absolute;inset:0;display:grid;place-content:center;text-align:center;padding:24px;color:#e1d0bd}
 #restaurant-status[hidden],#restaurant-views[hidden]{display:none}
 #restaurant-views{display:flex;gap:8px;flex-wrap:wrap}
-.scene details{margin:12px 0}
-.scene summary{cursor:pointer;color:#bdd8ed;margin-bottom:12px}
+.main details{margin:12px 0}
+.main summary{cursor:pointer;color:#bdd8ed;margin-bottom:12px}
+body .main{display:block;padding:0;max-width:none;margin:0}
+body .scene{border:0;border-radius:0;padding:0;position:relative;isolation:isolate}
+#restaurant-stage{border-radius:0}
+.scene>h1,.scene>.eyebrow,.scene>.lede{position:absolute;z-index:2;left:clamp(16px,4vw,64px);margin:0;pointer-events:none;text-shadow:0 2px 18px #100806}
+.scene>.eyebrow{bottom:145px}
+.scene>h1{bottom:95px}
+.scene>.lede{bottom:66px;max-width:calc(100% - 32px);color:#f6eee2}
+#restaurant-views{z-index:3;position:absolute;bottom:0;left:0;right:0;padding:18px clamp(14px,4vw,64px);background:linear-gradient(transparent,#100c0bed)}
+.main>details{margin:0;padding:14px clamp(14px,4vw,64px);background:#101416}
+#booking{position:fixed;z-index:12;right:14px;top:90px;bottom:auto;max-height:calc(100svh - 104px);overflow:auto;width:min(410px,calc(100% - 28px));background:#15191bee;backdrop-filter:blur(18px)}
+#booking[hidden]{display:none}
+#booking-close{float:right}
+@media(max-width:720px){
+  #restaurant-stage{height:calc(100svh - 135px);min-height:420px}
+  #restaurant-views{padding:10px 14px;gap:5px}
+  #restaurant-views .btn{padding:5px 8px;font-size:12px}
+  .scene>.eyebrow,.scene>.lede{display:none}
+  .scene>h1{bottom:105px;font-size:26px}
+  #booking{top:auto;bottom:10px;max-height:calc(100svh - 24px)}
+}
 </style>
 <script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js"}}</script>
 </head><body>
-<header class="top"><div><div class="brand">МЕРИДИАМ</div><div class="sub">СТУДИЯ ИНТЕРАКТИВНЫХ РЕШЕНИЙ</div></div><nav class="nav"><button class="btn active" onclick="closeMenu()">Обзор</button><button class="btn" onclick="openMenu(false)">Меню · панель</button><button class="btn" onclick="openMenu(true)">Меню · полностью</button><button class="btn primary" onclick="document.getElementById('booking').scrollIntoView({behavior:'smooth'})">Бронь</button></nav></header>
+<header class="top"><div><div class="brand">МЕРИДИАМ</div><div class="sub">СТУДИЯ ИНТЕРАКТИВНЫХ РЕШЕНИЙ</div></div><nav class="nav"><button class="btn active" onclick="closeMenu()">Обзор</button><button class="btn" onclick="openMenu(false)">Меню · панель</button><button class="btn" onclick="openMenu(true)">Меню · полностью</button><button class="btn primary" onclick="document.getElementById('booking').hidden=false;document.getElementById('booking-close').focus()">Бронь</button></nav></header>
 <main class="main"><section class="scene"><div class="eyebrow">MERIDIAM RESTAURANT</div><h1>Выберите место для вечера</h1><div class="lede">Выберите зону или столик в сцене. Перетаскивайте сцену, чтобы повернуть камеру, и приближайте колёсиком или жестом.</div><div id="restaurant-views" hidden>
 <button class="btn" data-restaurant-view="overview">Общий вид</button>
 <button class="btn" data-restaurant-view="hall">Основной зал · 12</button>
@@ -20,9 +40,9 @@
 <button class="btn" id="seat-view">Вид со столика</button>
 <button class="btn" id="sunlight" aria-pressed="false">День</button>
 </div><div id="restaurant-stage"><div id="restaurant-status">Загружается 3D-сцена. Столики доступны на плане ниже.</div></div>
-<details><summary>План и выбор столиков</summary><div class="map" id="floor"><div class="walk"></div><div class="terrace"></div><div class="vip"></div><div class="bar"></div><div class="map-label" style="left:7%;top:18%">ОСНОВНОЙ ЗАЛ · 12</div><div class="map-label" style="right:8%;top:7%">ТЕРРАСА · 6</div><div class="map-label" style="right:10%;bottom:6%">VIP · 2</div></div><div class="map-footer"><span><i class="dot"></i> Свободен &nbsp;&nbsp; <i class="dot" style="background:#dc9295"></i> Занят &nbsp;&nbsp; <i class="dot" style="background:#9fcfff"></i> Выбран</span><span>План столиков</span></div></details></section>
-<aside class="details" id="booking"><div class="eyebrow">БРОНИРОВАНИЕ</div><h2>Ваш столик</h2><div class="quiet" id="selection">Выберите свободный столик на схеме.</div><div class="divider"></div><div class="stack"><div class="field"><label>Дата</label><input id="date" type="date"></div><div class="field"><label>Время</label><select id="time"><option>18:00</option><option>18:30</option><option>19:00</option><option>19:30</option><option>20:00</option><option>20:30</option><option>21:00</option></select></div><div class="field"><label>Количество гостей</label><select id="guests"><option>1</option><option selected>2</option><option>3</option><option>4</option><option>5</option><option>6</option></select></div></div><div class="divider"></div><div class="zone-title">ПРЕДВАРИТЕЛЬНЫЙ ЗАКАЗ</div><div id="summary" class="quiet">Вы пока не выбрали блюда.</div><div class="row" style="margin-top:12px"><button class="btn" onclick="openMenu(false)">Выбрать блюда</button><button class="btn primary" onclick="book()">Продолжить бронирование</button></div><div class="footer-note">Демонстрационная модель: бронирование не направляется в реальный ресторан. Цены и блюда условные.</div></aside></main>
-<div id="menu" class="panel-overlay hide" role="dialog" aria-label="Меню ресторана"><div class="panel-head"><div><div class="eyebrow">RESTAURANT MENU</div><div style="font-size:24px">Меню</div></div><div class="row"><button class="btn" id="viewmode" onclick="switchMode()">⛶</button><button class="btn" onclick="closeMenu()">Закрыть ✕</button></div></div><div style="padding:12px 18px"><input class="search" id="search" placeholder="Поиск по блюдам" oninput="renderMenu()"><div class="row" style="margin-top:8px"><button class="btn" id="onlyFav" onclick="toggleFavFilter()">♡ Избранное</button><button class="btn" onclick="setCat('Все')">Все блюда</button></div></div><div class="panel-body"><div class="categories" id="categories"></div><div class="dishes" id="dishes"></div></div><div class="orderbox"><div id="cartline">Предзаказ пока пуст</div><div class="row" style="margin-top:8px"><button class="btn primary" onclick="closeMenu();document.getElementById('booking').scrollIntoView({behavior:'smooth'})">К бронированию →</button><button class="btn" onclick="clearCart()">Очистить</button></div><div class="footer-note">♡ Избранное сохраняется в браузере. Предзаказ — перечень блюд, без оплаты и приготовления.</div></div></div>
+</section><details><summary>План и выбор столиков</summary><div class="map" id="floor"><div class="walk"></div><div class="terrace"></div><div class="vip"></div><div class="bar"></div><div class="map-label" style="left:7%;top:18%">ОСНОВНОЙ ЗАЛ · 12</div><div class="map-label" style="right:8%;top:7%">ТЕРРАСА · 6</div><div class="map-label" style="right:10%;bottom:6%">VIP · 2</div></div><div class="map-footer"><span><i class="dot"></i> Свободен &nbsp;&nbsp; <i class="dot" style="background:#dc9295"></i> Занят &nbsp;&nbsp; <i class="dot" style="background:#9fcfff"></i> Выбран</span><span>План столиков</span></div></details>
+<aside class="details" id="booking" hidden aria-label="Бронирование"><button type="button" class="btn" id="booking-close" aria-label="Закрыть бронирование" onclick="this.closest('aside').hidden=true">Закрыть ✕</button><div class="eyebrow">БРОНИРОВАНИЕ</div><h2>Ваш столик</h2><div class="quiet" id="selection">Выберите свободный столик на схеме.</div><div class="divider"></div><div class="stack"><div class="field"><label>Дата</label><input id="date" type="date"></div><div class="field"><label>Время</label><select id="time"><option>18:00</option><option>18:30</option><option>19:00</option><option>19:30</option><option>20:00</option><option>20:30</option><option>21:00</option></select></div><div class="field"><label>Количество гостей</label><select id="guests"><option>1</option><option selected>2</option><option>3</option><option>4</option><option>5</option><option>6</option></select></div></div><div class="divider"></div><div class="zone-title">ПРЕДВАРИТЕЛЬНЫЙ ЗАКАЗ</div><div id="summary" class="quiet">Вы пока не выбрали блюда.</div><div class="row" style="margin-top:12px"><button class="btn" onclick="openMenu(false)">Выбрать блюда</button><button class="btn primary" onclick="book()">Продолжить бронирование</button></div><div class="footer-note">Демонстрационная модель: бронирование не направляется в реальный ресторан. Цены и блюда условные.</div></aside></main>
+<div id="menu" class="panel-overlay hide" role="dialog" aria-label="Меню ресторана"><div class="panel-head"><div><div class="eyebrow">RESTAURANT MENU</div><div style="font-size:24px">Меню</div></div><div class="row"><button class="btn" id="viewmode" onclick="switchMode()">⛶</button><button class="btn" onclick="closeMenu()">Закрыть ✕</button></div></div><div style="padding:12px 18px"><input class="search" id="search" placeholder="Поиск по блюдам" oninput="renderMenu()"><div class="row" style="margin-top:8px"><button class="btn" id="onlyFav" onclick="toggleFavFilter()">♡ Избранное</button><button class="btn" onclick="setCat('Все')">Все блюда</button></div></div><div class="panel-body"><div class="categories" id="categories"></div><div class="dishes" id="dishes"></div></div><div class="orderbox"><div id="cartline">Предзаказ пока пуст</div><div class="row" style="margin-top:8px"><button class="btn primary" onclick="closeMenu();document.getElementById('booking').hidden=false;document.getElementById('booking-close').focus()">К бронированию →</button><button class="btn" onclick="clearCart()">Очистить</button></div><div class="footer-note">♡ Избранное сохраняется в браузере. Предзаказ — перечень блюд, без оплаты и приготовления.</div></div></div>
 <div class="screen hide" id="confirm"><div class="modal"><h2>Тестовое бронирование</h2><p id="recap" class="muted"></p><div class="stack"><div class="field"><label>Имя</label><input id="guestname" placeholder="Как к вам обращаться"></div><div class="field"><label>Телефон (демо)</label><input id="phone" type="tel" placeholder="Номер телефона"></div><div class="field"><label>Комментарий</label><input id="comment" placeholder="Пожелания к визиту"></div></div><div class="row" style="margin-top:20px"><button class="btn primary" onclick="finishBooking()">Подтвердить тестовую бронь</button><button class="btn" onclick="document.getElementById('confirm').classList.add('hide')">Отмена</button></div><div class="footer-note">Никакие контакты не передаются на сервер. Эта версия сохраняет тестовую бронь только в текущем браузере.</div></div></div>
 <script>const dishes=[{"id": "d01", "name": "Омлет с томатами", "category": "Завтраки", "price": 690, "desc": "Демонстрационное блюдо · состав и аллергены уточняются", "color": "#B87F55"}, {"id": "d02", "name": "Сырники с ягодами", "category": "Завтраки", "price": 790, "desc": "Демонстрационное блюдо · состав и аллергены уточняются", "color": "#B87F55"}, {"id": "d03", "name": "Шакшука", "category": "Завтраки", "price": 850, "desc": "Демонстрационное блюдо · состав и аллергены уточняются", "color": "#B87F55"}, {"id": "d04", "name": "Бенедикт с лососем", "category": "Завтраки", "price": 1190, "desc": "Демонстрационное блюдо · состав и аллергены уточняются", "color": "#B87F55"}, {"id": "d05", "name": "Брускетта с томатами", "category": "Закуски", "price": 690, "desc": "Демонстрационное блюдо · состав и аллергены уточняются", "color": "#7A9B81"}, {"id": "d06", "name": "Тартар из говядины", "category": "Закуски", "price": 1590, "desc": "Демонстрационное блюдо · состав и аллергены уточняются", "color": "#7A9B81"}, {"id": "d07", "name": "Сырная тарелка", "category": "Закуски", "price": 1790, "desc": "Демонстрационное блюдо · состав и аллергены уточняются", "color": "#7A9B81"}, {"id": "d08", "name": "Карпаччо из говядины", "category": "Закуски", "price": 1490, "desc": "Демонстрационное блюдо · состав и аллергены уточняются", "color": "#7A9B81"}, {"id": "d09", "name": "Креветки в чесночном масле", "category": "Закуски", "price": 1590, "desc": "Демонстрационное блюдо · состав и аллергены уточняются", "color": "#7A9B81"}, {"id": "d10", "name": "Цезарь с курицей", "category": "Салаты", "price": 990, "desc": "Демонстрационное блюдо · состав и аллергены уточняются", "color": "#B36E5D"}, {"id": "d11", "name": "Цезарь с креветками", "category": "Салаты", "price": 1290, "desc": "Демонстрационное блюдо · состав и аллергены уточняются", "color": "#B36E5D"}, {"id": "d12", "name": "Греческий салат", "category": "Салаты", "price": 890, "desc": "Демонстрационное блюдо · состав и аллергены уточняются", "color": "#B36E5D"}, {"id": "d13", "name": "Салат с бурратой", "category": "Салаты", "price": 1690, "desc": "Демонстрационное блюдо · состав и аллергены уточняются", "color": "#B36E5D"}, {"id": "d14", "name": "Салат с ростбифом", "category": "Салаты", "price": 1490, "desc": "Демонстрационное блюдо · состав и аллергены уточняются", "color": "#B36E5D"}, {"id": "d15", "name": "Том ям с креветками", "category": "Супы", "price": 1490, "desc": "Демонстрационное блюдо · состав и аллергены уточняются", "color": "#B9A16B"}, {"id": "d16", "name": "Грибной крем-суп", "category": "Супы", "price": 890, "desc": "Демонстрационное блюдо · состав и аллергены уточняются", "color": "#B9A16B"}, {"id": "d17", "name": "Борщ с говядиной", "category": "Супы", "price": 990, "desc": "Демонстрационное блюдо · состав и аллергены уточняются", "color": "#B9A16B"}, {"id": "d18", "name": "Тыквенный суп", "category": "Супы", "price": 790, "desc": "Демонстрационное блюдо · состав и аллергены уточняются", "color": "#B9A16B"}, {"id": "d19", "name": "Жюльен с грибами", "category": "Горячие закуски", "price": 890, "desc": "Демонстрационное блюдо · состав и аллергены уточняются", "color": "#889FB8"}, {"id": "d20", "name": "Камамбер запечённый", "category": "Горячие закуски", "price": 1390, "desc": "Демонстрационное блюдо · состав и аллергены уточняются", "color": "#889FB8"}, {"id": "d21", "name": "Креветки темпура", "category": "Горячие закуски", "price": 1290, "desc": "Демонстрационное блюдо · состав и аллергены уточняются", "color": "#889FB8"}, {"id": "d22", "name": "Кальмары гриль", "category": "Горячие закуски", "price": 1490, "desc": "Демонстрационное блюдо · состав и аллергены уточняются", "color": "#889FB8"}, {"id": "d23", "name": "Стейк рибай", "category": "Основные блюда", "price": 4990, "desc": "Демонстрационное блюдо · состав и аллергены уточняются", "color": "#B87F55"}, {"id": "d24", "name": "Филе миньон", "category": "Основные блюда", "price": 4590, "desc": "Демонстрационное блюдо · состав и аллергены уточняются", "color": "#B87F55"}, {"id": "d25", "name": "Лосось с овощами", "category": "Основные блюда", "price": 2990, "desc": "Демонстрационное блюдо · состав и аллергены уточняются", "color": "#B87F55"}, {"id": "d26", "name": "Куриное филе су-вид", "category": "Основные блюда", "price": 1890, "desc": "Демонстрационное блюдо · состав и аллергены уточняются", "color": "#B87F55"}, {"id": "d27", "name": "Утиная грудка", "category": "Основные блюда", "price": 2490, "desc": "Демонстрационное блюдо · состав и аллергены уточняются", "color": "#B87F55"}, {"id": "d28", "name": "Говяжьи щёчки", "category": "Основные блюда", "price": 2190, "desc": "Демонстрационное блюдо · состав и аллергены уточняются", "color": "#B87F55"}, {"id": "d29", "name": "Паста карбонара", "category": "Паста и ризотто", "price": 1490, "desc": "Демонстрационное блюдо · состав и аллергены уточняются", "color": "#7A9B81"}, {"id": "d30", "name": "Паста с морепродуктами", "category": "Паста и ризотто", "price": 2190, "desc": "Демонстрационное блюдо · состав и аллергены уточняются", "color": "#7A9B81"}, {"id": "d31", "name": "Ризотто с грибами", "category": "Паста и ризотто", "price": 1590, "desc": "Демонстрационное блюдо · состав и аллергены уточняются", "color": "#7A9B81"}, {"id": "d32", "name": "Паста с песто", "category": "Паста и ризотто", "price": 1390, "desc": "Демонстрационное блюдо · состав и аллергены уточняются", "color": "#7A9B81"}, {"id": "d33", "name": "Маргарита", "category": "Пицца", "price": 1290, "desc": "Демонстрационное блюдо · состав и аллергены уточняются", "color": "#B36E5D"}, {"id": "d34", "name": "Пепперони", "category": "Пицца", "price": 1490, "desc": "Демонстрационное блюдо · состав и аллергены уточняются", "color": "#B36E5D"}, {"id": "d35", "name": "Четыре сыра", "category": "Пицца", "price": 1690, "desc": "Демонстрационное блюдо · состав и аллергены уточняются", "color": "#B36E5D"}, {"id": "d36", "name": "С ветчиной и грибами", "category": "Пицца", "price": 1590, "desc": "Демонстрационное блюдо · состав и аллергены уточняются", "color": "#B36E5D"}, {"id": "d37", "name": "Картофельное пюре", "category": "Гарниры", "price": 490, "desc": "Демонстрационное блюдо · состав и аллергены уточняются", "color": "#B9A16B"}, {"id": "d38", "name": "Овощи гриль", "category": "Гарниры", "price": 690, "desc": "Демонстрационное блюдо · состав и аллергены уточняются", "color": "#B9A16B"}, {"id": "d39", "name": "Картофель фри", "category": "Гарниры", "price": 590, "desc": "Демонстрационное блюдо · состав и аллергены уточняются", "color": "#B9A16B"}, {"id": "d40", "name": "Рис с зеленью", "category": "Гарниры", "price": 490, "desc": "Демонстрационное блюдо · состав и аллергены уточняются", "color": "#B9A16B"}, {"id": "d41", "name": "Тирамису", "category": "Десерты", "price": 890, "desc": "Демонстрационное блюдо · состав и аллергены уточняются", "color": "#889FB8"}, {"id": "d42", "name": "Чизкейк", "category": "Десерты", "price": 890, "desc": "Демонстрационное блюдо · состав и аллергены уточняются", "color": "#889FB8"}, {"id": "d43", "name": "Медовик", "category": "Десерты", "price": 790, "desc": "Демонстрационное блюдо · состав и аллергены уточняются", "color": "#889FB8"}, {"id": "d44", "name": "Шоколадный фондан", "category": "Десерты", "price": 990, "desc": "Демонстрационное блюдо · состав и аллергены уточняются", "color": "#889FB8"}, {"id": "d45", "name": "Павлова", "category": "Десерты", "price": 1090, "desc": "Демонстрационное блюдо · состав и аллергены уточняются", "color": "#889FB8"}, {"id": "d46", "name": "Капучино", "category": "Напитки", "price": 490, "desc": "Демонстрационное блюдо · состав и аллергены уточняются", "color": "#B87F55"}, {"id": "d47", "name": "Латте", "category": "Напитки", "price": 550, "desc": "Демонстрационное блюдо · состав и аллергены уточняются", "color": "#B87F55"}, {"id": "d48", "name": "Эспрессо", "category": "Напитки", "price": 390, "desc": "Демонстрационное блюдо · состав и аллергены уточняются", "color": "#B87F55"}, {"id": "d49", "name": "Чай листовой", "category": "Напитки", "price": 590, "desc": "Демонстрационное блюдо · состав и аллергены уточняются", "color": "#B87F55"}, {"id": "d50", "name": "Домашний лимонад", "category": "Напитки", "price": 790, "desc": "Демонстрационное блюдо · состав и аллергены уточняются", "color": "#B87F55"}, {"id": "d51", "name": "Минеральная вода", "category": "Напитки", "price": 390, "desc": "Демонстрационное блюдо · состав и аллергены уточняются", "color": "#B87F55"}];const catNames=['Все',...new Set(dishes.map(d=>d.category))];const tables=[...Array(12)].map((_,i)=>({id:i+1,zone:'Основной зал',capacity:i%3===0?4:2,x:13+(i%4)*10.2,y:30+Math.floor(i/4)*18})).concat([...Array(6)].map((_,i)=>({id:i+13,zone:'Терраса',capacity:i%3===0?4:2,x:72+(i%3)*8.5,y:20+Math.floor(i/3)*18})),[{id:19,zone:'VIP-зона',capacity:6,x:75,y:78},{id:20,zone:'VIP-зона',capacity:6,x:89,y:78}]);let selected=1,category='Все',favOnly=false,full=false;let favorites=new Set(JSON.parse(localStorage.getItem('meridiam_restaurant_favorites')||'[]'));let cart=JSON.parse(localStorage.getItem('meridiam_restaurant_cart')||'{}');let demoBookings=JSON.parse(localStorage.getItem('meridiam_restaurant_bookings')||'[]');const fmt=n=>n.toLocaleString('ru-RU')+' ₽';const dateInput=document.getElementById('date');dateInput.value=new Date(Date.now()-new Date().getTimezoneOffset()*60000).toISOString().slice(0,10);dateInput.min=dateInput.value;
 function booked(t){return demoBookings.some(b=>b.id===t.id&&b.date===dateInput.value&&Math.abs(Number(b.time.slice(0,2))*60+Number(b.time.slice(3))-Number(document.getElementById('time').value.slice(0,2))*60-Number(document.getElementById('time').value.slice(3)))<120)}
@@ -41,13 +61,16 @@ function finishBooking(){let name=document.getElementById('guestname').value.tri
 dateInput.onchange=renderTables;document.getElementById('time').onchange=renderTables;renderTables();renderMenu();
 </script><script type="module">
 import * as T from 'https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js';
+import { GLTFLoader } from 'https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/loaders/GLTFLoader.js';
+import { Reflector } from 'https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/objects/Reflector.js';
 import { OrbitControls } from 'https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/controls/OrbitControls.js';
 
+const compact = matchMedia('(max-width: 720px), (pointer: coarse)').matches;
 const stage = document.querySelector('#restaurant-stage');
 const scene = new T.Scene();
 const camera = new T.PerspectiveCamera(43, 1, .12, 180);
 const renderer = new T.WebGLRenderer({ antialias: true });
-renderer.setPixelRatio(Math.min(1.6, devicePixelRatio));
+renderer.setPixelRatio(Math.min(compact ? 1.25 : 1.65, devicePixelRatio));
 renderer.shadowMap.enabled = true;
 renderer.shadowMap.type = T.PCFSoftShadowMap;
 renderer.toneMapping = T.ACESFilmicToneMapping;
@@ -106,6 +129,10 @@ stone.map = stoneGrain;
 const floorStone = stone.clone();
 floorStone.map = stoneGrain.clone();
 floorStone.map.repeat.set(12,9);
+floorStone.roughness = .28;
+floorStone.bumpMap = floorStone.map;
+floorStone.bumpScale = .012;
+
 const bronze = material(0xb58953, .27, .72);
 const china = material(0xf4e5cd, .35);
 const fabric = material(0x8a6c57, .96);
@@ -133,6 +160,24 @@ const box = (m, x,y,z, a,b,c, p) => mesh(boxGeo,m,[x,y,z],[a,b,c],p);
 const disc = (m, x,y,z, r,h, p) => mesh(cylinderGeo,m,[x,y,z],[r,h,r],p);
 
 box(floorStone,0,-.15,0,22,.3,16);
+if (!compact) {
+  const shader = {
+    ...Reflector.ReflectorShader,
+    fragmentShader: Reflector.ReflectorShader.fragmentShader.replace(
+      /vec4\(\s*blendOverlay\(\s*base.rgb,\s*color\s*\),\s*1.0\s*\)/,
+      'vec4(blendOverlay(base.rgb, color), .20)'
+    )
+  };
+  const reflectedFloor = new Reflector(new T.PlaneGeometry(21.96,15.96), {
+    color: 0x90837b, textureWidth: 640, textureHeight: 400, multisample: 0, shader
+  });
+  reflectedFloor.material.transparent = true;
+  reflectedFloor.material.depthWrite = false;
+  reflectedFloor.renderOrder = 1;
+  reflectedFloor.rotation.x = -Math.PI/2;
+  reflectedFloor.position.y = .004;
+  scene.add(reflectedFloor);
+}
 for (let x=-10;x<11;x+=2) box(walnut,x,.002,0,.008,.003,16);
 for (let z=-7;z<8;z+=2) box(walnut,0,.002,z,22,.003,.008);
 for (const x of [-10.65,3.9,10.65]) box(glow,x,.012,0,.024,.012,15.4);
@@ -148,8 +193,20 @@ for (let i=0;i<25;i++) box(walnut,-10.8+i*.45,.003,11.4,.018,.008,6.7);
 for (const z of [-6,-3.6,-1.2,1.2,3.6,6]) {
   box(bronze,10.95,2.25,z,.12,4.5,.09);
   box(glass,10.95,2.25,z+1.2,.035,4.4,2.37);
-  box(bronze,4.1,2.25,z,.075,4.5,.095);
-  if (z !== 1.2) box(glass,4.1,2.25,z+1.2,.025,4.43,2.33);
+
+}
+const partition = [-7.95,-5.85,-3.7,-1.55,.45,2.45,4.15,5.65,6.85,7.9].map(z=>
+  [4.25+Math.pow(Math.max(0,z+1.55),2)*.034,z]
+);
+for (const [i,[x,z]] of partition.entries()) {
+  box(bronze,x,2.24,z,.075,4.48,.075);
+  if (i===0) continue;
+  const [px,pz]=partition[i-1];
+  const length=Math.hypot(x-px,z-pz);
+  const angle=Math.atan2(x-px,z-pz);
+  for (const y of [.067,2.12,4.416])
+    box(bronze,(px+x)/2,y,(pz+z)/2,.055,.038,length).rotation.y=angle;
+  if (i!==5) box(glass,(px+x)/2,2.24,(pz+z)/2,.024,4.36,length-.047).rotation.y=angle;
 }
 for (const x of [-10,-7.5,-5,-2.5,0,2.5,5,7.5,10]) {
   box(bronze,x,2.25,7.93,.075,4.5,.075);
@@ -158,12 +215,23 @@ for (const x of [-10,-7.5,-5,-2.5,0,2.5,5,7.5,10]) {
 }
 box(bronze,0,1,14.7,22,.06,.06);
 box(glass,0,.53,14.7,22,.9,.025);
-box(walnut,-3.4,.56,-6.05,9,1.12,.95);
-box(stone,-3.4,1.14,-6.05,9.2,.13,1.1);
+const barFurniture = new T.Group();
+scene.add(barFurniture);
+barFurniture.rotation.y = Math.PI/2;
+barFurniture.position.set(-3.9,0,-3.4);
+box(walnut,-3.4,.56,-6.05,9,1.12,.95,barFurniture);
+box(stone,-3.4,1.14,-6.05,9.2,.13,1.1,barFurniture);
+box(glow,-3.4,1.037,-5.565,9,.022,.025,barFurniture);
+for(let x=-7.8;x<1;x+=.104) box(oak,x,.53,-5.56,.051,1.03,.034,barFurniture);
+for (let x=-7.4;x<.6;x+=1.28) {
+  disc(bronze,x,.035,-4.95,.16,.05,barFurniture);
+  disc(bronze,x,.39,-4.95,.027,.74,barFurniture);
+  disc(fabric,x,.79,-4.95,.221,.082,barFurniture);
+}
 for (const y of [1.7,2.35,3]) {
-  box(oak,-3.4,y,-7.51,8.55,.09,.49);
-  box(glow,-3.4,y-.06,-7.29,8.45,.025,.025);
-  for(let i=0;i<23;i++) disc(i%4===0?bronze:foliage[i%3],-7.3+i*.35,y+.18,-7.54,.055+(i%3)*.012,.29);
+  box(oak,-3.4,y,-7.51,8.55,.09,.49,barFurniture);
+  box(glow,-3.4,y-.06,-7.29,8.45,.025,.025,barFurniture);
+  for(let i=0;i<23;i++) disc(i%4===0?bronze:foliage[i%3],-7.3+i*.35,y+.18,-7.54,.055+(i%3)*.012,.29,barFurniture);
 }
 box(oak,-9.35,.49,5.45,1.6,.98,.76);
 box(stone,-9.35,1.02,5.45,1.72,.09,.85);
@@ -179,6 +247,78 @@ function planter(x,z) {
 }
 for(const [x,z] of [[-10,7],[10,7],[-10,13.8],[10,13.8],[4.85,-6.8],[10,5.5]]) planter(x,z);
 
+function indoorTree(x,z) {
+  const random = seededRandom(492);
+  const pot = stone.clone();
+  pot.color.set(0x514741);
+  disc(pot,x,.36,z,.76,.72);
+  disc(walnut,x,.723,z,.716,.016);
+  const bark = material(0x604332,.92);
+  bark.map=woodGrain;
+  const twigGeometry = new T.CylinderGeometry(.45,1,1,8);
+  function branch(start,end,radius) {
+    const direction=end.clone().sub(start);
+    const center=start.clone().addScaledVector(direction,.5);
+    const stem=mesh(twigGeometry,bark,center.toArray(),[radius,direction.length(),radius]);
+    stem.quaternion.setFromUnitVectors(T.Object3D.DEFAULT_UP,direction.normalize());
+  }
+  const origin = new T.Vector3(x,.7,z);
+  const fork = new T.Vector3(x+.09,2.19,z-.1);
+  branch(origin,fork,.147);
+  const leafGeometry = new T.PlaneGeometry(.088,.157);
+  const leafMat = new T.MeshStandardMaterial({color:0xd3ddaa,side:T.DoubleSide,roughness:.58,alphaTest:.35});
+  const mask=document.createElement('canvas');
+  mask.width=32;
+  mask.height=48;
+  const paint=mask.getContext('2d');
+  paint.fillStyle='#000';
+  paint.fillRect(0,0,32,48);
+  paint.fillStyle='#fff';
+  paint.beginPath();
+  paint.moveTo(16,1);
+  paint.bezierCurveTo(35,14,33,33,16,47);
+  paint.bezierCurveTo(-2,34,-3,14,16,1);
+  paint.fill();
+  leafMat.alphaMap=new T.CanvasTexture(mask);
+  const leaves=new T.InstancedMesh(leafGeometry,leafMat,compact?600:1200);
+  const matrix=new T.Object3D();
+  const tint=new T.Color();
+  let n=0;
+  for (let limb=0;limb<10;limb++) {
+    const a=limb*2.39996;
+    const knee=new T.Vector3(x+Math.sin(a)*.51,2.65+random()*.25,z+Math.cos(a)*.51);
+    const end=new T.Vector3(x+Math.sin(a)*(.72+random()*.6),3.28+random()*.7,z+Math.cos(a)*1.17);
+    branch(fork,knee,.072);
+    branch(knee,end,.047);
+    for(let j=0;j<4;j++) {
+      const twig=end.clone().add(new T.Vector3((random()-.5)*.85,random()*.45,(random()-.5)*.85));
+      branch(knee.clone().lerp(end,.61+j*.11),twig,.016);
+      for(let k=0;k<(compact?15:30);k++) {
+        matrix.position.copy(twig).add(new T.Vector3((random()-.5)*.71,(random()-.5)*.43,(random()-.5)*.68));
+        matrix.rotation.set(random()*Math.PI,random()*Math.PI,random()*Math.PI);
+        matrix.scale.setScalar(.64+random()*.68);
+        matrix.updateMatrix();
+        leaves.setMatrixAt(n,matrix.matrix);
+        leaves.setColorAt(n++,tint.setHSL(.16+random()*.095,.34+random()*.23,.23+random()*.19));
+      }
+    }
+  }
+  leaves.receiveShadow=true;
+  leaves.castShadow=!compact;
+  scene.add(leaves);
+  const uplight=new T.PointLight(0xffc481,31,4.6,2);
+  uplight.position.set(x-.31,.78,z+.25);
+  scene.add(uplight);
+}
+indoorTree(-5.1,-1.77);
+
+const chairMounts = [];
+const glassMounts = [];
+const tableStone = stone.clone();
+tableStone.map=stoneGrain;
+tableStone.roughness=.235;
+tableStone.normalScale.set(.3,.3);
+const shades = material(0x694021,.26,.75);
 const layout = [
   ...[-8.45,-5.25,-2.05,1.15].flatMap(x=>[-3.5,0,3.65].map(z=>[x,z])),
   ...[-7,0,7].flatMap(x=>[10.05,12.9].map(z=>[x,z])),
@@ -192,7 +332,8 @@ for (const [i,[x,z]] of layout.entries()) {
   group.position.set(x,0,z);
   scene.add(group);
   const radius = table.capacity===6?.92:table.capacity===4?.71:.5;
-  const top = disc(i>=18?stone:oak,0,.76,0,radius,.085,group);
+  const top = disc(tableStone,0,.76,0,radius,.085,group);
+  disc(bronze,0,.725,0,radius*.988,.012,group);
   top.userData.tableId = table.id;
   pickables.push(top);
   disc(bronze,0,.08,0,.31,.055,group);
@@ -206,6 +347,7 @@ for (const [i,[x,z]] of layout.entries()) {
     chair.position.set(Math.sin(angle)*(radius+.34),0,Math.cos(angle)*(radius+.34));
     chair.rotation.y = angle;
     group.add(chair);
+    chairMounts.push(chair);
     mesh(upholstery,fabric,[0,.446,0],[.24,.092,.225],chair);
     const back = mesh(upholstery,fabric,[0,.68,.173],[.24,.233,.069],chair);
     back.rotation.x = -.11;
@@ -222,10 +364,21 @@ for (const [i,[x,z]] of layout.entries()) {
     const offsetX = Math.cos(angle)*.157, offsetZ = -Math.sin(angle)*.157;
     const cutlery = box(bronze,px+offsetX,.81,pz+offsetZ,.015,.012,.17,group);
     cutlery.rotation.y = angle;
-    disc(glass,px*.73,.875,pz*.73,.031,.11,group);
+    const glassMount=new T.Group();
+    glassMount.position.set(px*.68+offsetX*.53,.804,pz*.68+offsetZ*.53);
+    group.add(glassMount);
+    disc(glass,0,.06,0,.031,.11,glassMount);
+    glassMounts.push(glassMount);
   }
-  disc(bronze,0,.85,0,.046,.095,group);
-  disc(glow,0,.91,0,.016,.025,group);
+  disc(bronze,0,.819,0,.053,.018,group);
+  disc(bronze,0,.925,0,.013,.205,group);
+  disc(glow,0,1.026,0,.083,.014,group);
+  mesh(new T.CylinderGeometry(.063,.103,.071,24),shades,[0,1.065,0],[1,1,1],group);
+  if (i===0 || i===2 || i===5 || i===10 || i===19) {
+    const spot = new T.PointLight(0xffbe76,1.52,1.95,2);
+    spot.position.set(0,1.012,0);
+    group.add(spot);
+  }
   if (i%3===0) {
     disc(bronze,.18,.866,0,.049,.124,group);
     for(let flower=0;flower<6;flower++) {
@@ -234,6 +387,27 @@ for (const [i,[x,z]] of layout.entries()) {
     }
   }
 }
+new GLTFLoader().load('./assets/dining-models.glb', ({scene: models})=>{
+  const chair = models.getObjectByName('DiningChair');
+  const goblet = models.getObjectByName('WineGlass');
+  if (!chair || !goblet) throw new Error('Missing dining asset roots');
+  chair.traverse(object=>{
+    if (!object.isMesh) return;
+    object.castShadow=true;
+    object.receiveShadow=true;
+  });
+  goblet.traverse(object=>{
+    if (!object.isMesh) return;
+    object.material = new T.MeshPhysicalMaterial({
+      color:0xe7e9e6, roughness:.1, transparent:true, opacity:.22,
+      metalness:.23, clearcoat:1, depthWrite:false, side:T.DoubleSide
+    });
+  });
+  for(const mount of chairMounts) { mount.clear(); mount.add(chair.clone()); }
+  for(const mount of glassMounts) { mount.clear(); mount.add(goblet.clone()); }
+  stage.dataset.diningModels='ready';
+},undefined,error=>console.warn('Restaurant dining models:',error));
+
 for (const [x,z] of [[-7,-2],[-2,-2],[-7,3],[-2,3],[7,-3],[7,3]]) {
   disc(bronze,x,4.18,z,.018,.8);
   const ring = new T.Mesh(new T.TorusGeometry(.59,.023,8,48),glow);
@@ -296,10 +470,12 @@ scene.add(sun);
 
 const views = {
   overview: [[17,13,25],[0,.5,3]],
-  hall: [[1.55,2.05,5.25],[-4.45,1.75,-3.3]],
+  hall: [[-7.48,1.58,-4.64],[-2.75,1.72,6.85]],
   terrace: [[9,3.7,13],[-2,1.3,8.8]],
   vip: [[9.8,2.65,5.65],[7.3,1.25,-2]]
 };
+camera.fov = compact ? 57 : 62;
+camera.updateProjectionMatrix();
 camera.position.set(...views.hall[0]);
 controls.target.set(...views.hall[1]);
 let transition;
@@ -316,7 +492,13 @@ document.querySelectorAll('[data-restaurant-view]').forEach(button=>button.addEv
 document.querySelector('#seat-view').addEventListener('click',()=>{
   const index = tables.findIndex(table=>table.id===selected);
   const [x,z] = layout[index];
-  go([x,1.19,z+.94],[x,1.17,z-1.65]);
+  const angle = Math.PI/4;
+  const distance=(tables[index].capacity===6?.92:tables[index].capacity===4?.71:.5)+.39;
+  go([x+Math.sin(angle)*distance,1.19,z+Math.cos(angle)*distance],[x-.39,.94,z-.57]);
+});
+const booking = document.querySelector('#booking');
+document.addEventListener('keydown',event=>{
+  if (event.key==='Escape' && document.querySelector('#confirm').classList.contains('hide')) booking.hidden=true;
 });
 const lightToggle = document.querySelector('#sunlight');
 function lightMode(day) {

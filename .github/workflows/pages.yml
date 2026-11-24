@@ -16,7 +16,7 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 22
-      - name: Validate prototype and stage the static site
+      - name: Validate the restaurant and stage the static site
         run: |
           node --input-type=module <<'JS'
           import { readFileSync } from 'node:fs';
@@ -29,7 +29,8 @@ jobs:
           for (const [, source] of scripts) new Script(source, { filename: 'index.html' });
           JS
           mkdir -p dist
-          cp index.html dist/
+          cp -R index.html assets dist/
+          test -s dist/assets/dining-models.glb
       - uses: actions/upload-pages-artifact@v3
         if: github.ref == 'refs/heads/main'
         with:
