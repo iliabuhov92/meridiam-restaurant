@@ -21,7 +21,12 @@ function intersects(a,b) {
     channel:'chrome', args:['--use-angle=swiftshader','--enable-unsafe-swiftshader']
   });
   const errors=[];
-  const watch=page=>page.on('pageerror',error=>errors.push(error.message));
+  const watch=page=>{
+    page.on('pageerror',error=>errors.push(error.message));
+    page.on('console',message=>{
+      if(message.type()==='error' && /THREE|WebGL|3D scene|shader/i.test(message.text())) errors.push(message.text());
+    });
+  };
   const report={commit:url.searchParams.get('build'),browser:browser.version(),viewport,frames:{}};
   try {
     const page=await browser.newPage({viewport,deviceScaleFactor:1});
@@ -57,6 +62,19 @@ function intersects(a,b) {
       report.frames[name]=JSON.parse(await page.locator('#stage').getAttribute('data-measurement'));
       await capture(page,name);
     }
+    for(const name of ['seat','orbit']) {
+      const frame=report.frames[name];
+      for(const item of ['plate','stemware']) {
+        const [x0,y0,x1,y1]=frame.items[item];
+        assert.ok(x0>=0 && y0>=0 && x1<=frame.width && y1<=frame.height,
+          name+' '+item+' is clipped');
+      }
+    }
+    const seatFrame=report.frames.seat;
+    const orbitFrame=report.frames.orbit;
+    const bearing=frame=>Math.atan2(frame.camera[0]-frame.target[0],frame.camera[2]-frame.target[2]);
+    report.orbitDegrees=(bearing(orbitFrame)-bearing(seatFrame))*180/Math.PI;
+    assert.ok(Math.abs(report.orbitDegrees-20)<=1);
     if(process.env.BASELINE_DIR) {
       const baseline=new URL('https://table-baseline.invalid/table/');
       const mime={'.html':'text/html','.mjs':'text/javascript','.glb':'model/gltf-binary','.webp':'image/webp'};
@@ -98,6 +116,11 @@ function intersects(a,b) {
     await session.send('Input.dispatchTouchEvent',{type:'touchMove',touchPoints:[{x:240,y:y-15}]});
     await session.send('Input.dispatchTouchEvent',{type:'touchEnd',touchPoints:[]});
     await mobile.waitForFunction(before=>document.querySelector('#stage').dataset.camera!==before,mobilePose);
+    const orbitPose=await mobile.locator('#stage').getAttribute('data-camera');
+    await session.send('Input.dispatchTouchEvent',{type:'touchStart',touchPoints:[{x:156,y,id:0},{x:230,y,id:1}]});
+    await session.send('Input.dispatchTouchEvent',{type:'touchMove',touchPoints:[{x:125,y,id:0},{x:261,y,id:1}]});
+    await session.send('Input.dispatchTouchEvent',{type:'touchEnd',touchPoints:[]});
+    await mobile.waitForFunction(before=>document.querySelector('#stage').dataset.camera!==before,orbitPose);
     await capture(mobile,'mobile');
     assert.equal(report.overlapDesktop,false);
     assert.equal(report.overlapMobile,false);

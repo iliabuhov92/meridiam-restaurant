@@ -149,7 +149,25 @@ box(brass,0,.057,-3.47,9,.022,.012);
 const table = new T.Group();
 scene.add(table);
 const radius=.75;
-const counter=lathe(marble,[[0,.708],[radius-.027,.708],[radius-.009,.712],[radius-.002,.72],
+const counterMarble=marble.clone();
+counterMarble.onBeforeCompile=shader=>{
+  shader.vertexShader='varying vec3 vStonePoint;\nvarying vec3 vStoneNormal;\n'+shader.vertexShader.replace(
+    '#include <begin_vertex>','#include <begin_vertex>\nvStonePoint=position;\nvStoneNormal=normal;'
+  );
+  shader.fragmentShader='varying vec3 vStonePoint;\nvarying vec3 vStoneNormal;\n'+shader.fragmentShader.replace(
+    '#include <map_fragment>',`
+      vec3 mapWeights=pow(abs(normalize(vStoneNormal)),vec3(5.0));
+      mapWeights/=dot(mapWeights,vec3(1.0));
+      vec2 sideY=vec2(vStonePoint.x,(vStonePoint.y-.769))/1.5+.5;
+      vec2 sideX=vec2(vStonePoint.z,(vStonePoint.y-.769))/1.5+.5;
+      vec4 stone=texture2D(map,vMapUv)*mapWeights.y
+        +texture2D(map,sideY)*mapWeights.z
+        +texture2D(map,sideX)*mapWeights.x;
+      diffuseColor*=stone;
+    `
+  );
+};
+const counter=lathe(counterMarble,[[0,.708],[radius-.027,.708],[radius-.009,.712],[radius-.002,.72],
   [radius,.737],[radius,.752],[radius-.005,.764],[radius-.016,.769],[0,.769]],0,0,0,table,144);
 const counterVertices=counter.geometry.getAttribute('position');
 const counterUV=counter.geometry.getAttribute('uv');
@@ -288,6 +306,14 @@ const glassMat = new T.MeshPhysicalMaterial({
   ior:1.49, opacity:1, attenuationDistance:Infinity,
   envMapIntensity:2.3, specularIntensity:1
 });
+// Controlled grazing reflection supplements real transmission for thin crystal on mottled stone.
+glassMat.onBeforeCompile=shader=>{
+  shader.fragmentShader=shader.fragmentShader.replace('#include <opaque_fragment>',`
+    float grazing=pow(1.0-abs(dot(normalize(normal),normalize(vViewPosition))),4.0);
+    outgoingLight+=vec3(.17,.19,.22)*grazing;
+    #include <opaque_fragment>
+  `);
+};
 const cutlery=standard(0xcfc6b8,.26,.89);
 function utensil(outline) {
   const shape=new T.Shape();
